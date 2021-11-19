@@ -117,7 +117,6 @@ class PageHead extends React.Component {
               </button>
             </form>
           </ul>
-
           <ul className="nav navbar-nav navbar-right">
             <li><a className = "btn btn-link" href = '#' role = "button"  data-toggle = "modal" data-target = "#myAddLinkModal"><span className="glyphicon glyphicon-link"></span> Add Link</a></li>
             <li><a className = "btn btn-link" href = '#' role = "button" data-toggle = "modal" data-target = "#mySignUpModal"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
