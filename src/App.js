@@ -132,8 +132,6 @@ class PageHead extends React.Component {
 class SideBar extends React.Component {
   render() {
     return (
-       
-       
       <div class="w3-sidebar w3-light-grey w3-bar-block" style={{ width: "15%"}}>
         <a href="#" class="w3-bar-item w3-button"><span className="glyphicon glyphicon-home"></span> Home</a>
         <a href="#" class="w3-bar-item w3-button"><span className="glyphicon glyphicon-bookmark"></span> Marks</a>
@@ -170,9 +168,7 @@ class MainContent extends React.Component {
 class IssuePanel extends React.Component {
 
   render() {
-
     const issue = this.props.issue;
-    
     var displaymode = issue.noteText == null ? 'none' : 'block';
     return (
       <div class="row">
