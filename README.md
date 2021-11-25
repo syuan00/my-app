@@ -3,7 +3,14 @@
 ## 进度汇报
 
 - hy
-    - 目前只做了前后端分离，实现了功能，后端的内容和graphql以及数据库初始化都还没写，如果里面由内容都是从tut5移植过来的，可进行修改
+    - 11.25 17：00 目前只做了前后端分离，后端的内容和graphql以及数据库初始化都还没写，里面由内容都是从tut5移植过来的，可进行修改
+
+    - 11.26 00：06 
+        - 添加了addlink的功能，目前只是添加url到后端,添加以后home可以显示新增的内容，后端通过graphql可以查询到信息。但是显示在home部分关于该页面的title summary等内容可能需要进行页面抓取，这部分没做，当前用占位符代替
+        - 初始化了schema.graphql。定义了一些数据结构和功能
+        - App.js获取initialEntries已经修改成从后端获取，运行之前记得运行数据库初始化代码，来加载初始数据
+            - To hx： initialEntries 接口仍然放在代码中了，发现你写的一部分内容是直接获取的initialEntries[i]，可能需要你改一下你引用该部分的代码
+        - 添加了部分注释，简略
 
 ## Environment required :
 - mongodb [skip this if you have had mongodb installed]

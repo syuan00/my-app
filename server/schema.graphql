@@ -1,20 +1,33 @@
 scalar GraphQLDateTime
 
 type Issue {
+  # user_id: Int!
+  # user_password: String!
   id: Int!
-  name: String
-  phone: String
-  time: GraphQLDateTime
+  type: String!
+  title: String
+  link: String!
+  summary: String
+  summaryImage: String
+  createdTime: GraphQLDateTime
+  category:String # home mark read folder
+  folder: String
+  tags: String
+  text: String
+  snapshot: String
+  noteText: String
+  lastMotifiedTime: String
 }
 
 "Toned down Issue, used as inputs, without server generated values."
 input IssueInputs {
-  name: String!
-  phone: String!
+  link: String
+}
+input SideBarTargetCategory{
+  category:String
 }
 
 ##### Top level declarations
-
 type Query {
   about: String!
   issueList: [Issue!]!

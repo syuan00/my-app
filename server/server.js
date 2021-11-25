@@ -1,21 +1,3 @@
-// const express = require("express");
-// const bodyParser = require("body-parser");
-// const app = express();
-// const port = process.env.PORT || 5000;
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.get("/api/hello", (req, res) => {
-//   res.send({ express: "Hello From Express" });
-// });
-// app.post("/api/world", (req, res) => {
-//   console.log(req.body);
-//   res.send(
-//     `I received your POST request. This is what you sent me: ${req.body.post}`
-//   );
-// });
-// app.listen(port, () => console.log(`Listening on port ${port}`));
-
-
 const fs = require('fs');
 const express = require('express');
 const { ApolloServer, UserInputError } = require('apollo-server-express');
@@ -29,6 +11,10 @@ let aboutMessage = "Issue Tracker API v1.0";
 let deletedId = -1;
 const MAXSIZE = 25;
 
+/**
+ * @author Hu Yue
+ * @description for the format of the time
+ */
 const GraphQLDateTime = new GraphQLScalarType({
   name: 'GraphQLDateTime',
   description: 'A DateTime() type in GraphQL as a scalar',
@@ -47,6 +33,10 @@ const GraphQLDateTime = new GraphQLScalarType({
   },
 });
 
+/**
+ * @author Hu Yue
+ * @description define the resolver
+ */
 const resolvers = {
   Query: {
     about: () => aboutMessage,
@@ -61,58 +51,68 @@ const resolvers = {
   GraphQLDateTime,
 };
 
+/**
+ * @author Hu Yue
+ * @description query sipport: get the message
+ */
 function setAboutMessage(_, { message }) {
   return aboutMessage = message;
 }
-
+/**
+ * @author Hu Yue
+ * @description query support: get the issueList
+ */
 async function issueList() {
   const issues = await db.collection('issues').find({}).toArray();
   return issues;
 }
 
-
+/**
+ * @author: Hu Yue
+ * @description helper function: check and process the link client added, delete whitespace at the front and end.
+ * give error if link added before or empty link
+ */
 async function issueAddValidate(issue) {
-  const curName = issue.name.replace(/(^\s*)|(\s*$)/g, "").replace(/\s+/g, ' ');
-  const curPhone = issue.phone.replace(/(^\s*)|(\s*$)/g, "");
-  issue.name = curName;
-  issue.phone = curPhone;
-  const existed = await db.collection('issues').findOne({name: curName, phone: curPhone});
-  const curSize = await db.collection('issues').count();
-
+  const curLink = issue.link.replace(/^\s+|\s+$/gm, '');
+  issue.link = curLink;
+  const existed = await db.collection('issues').findOne({link:curLink});
   const errors = [];
-  // check for invalid entry name and phone number
-  if(curName.length == 0 && curPhone.length == 0){
-    errors.push("Please enter your information!");
-  }
-  else if(curName.length == 0){
-    errors.push("Please enter your name!")
-  }
-  else if(!checkValidPhoneNumber(curPhone) || curPhone.length == 0){
-    errors.push("Please enter valid phone number!")
-  }
   // check if added before
-  else if(existed !== null){
-    errors.push("already in the waitingList");
+  if(curLink.length == 0){
+    errors.push("Cannot type in empty url!!")
   }
-  //check the size of the table
-  else if ((MAXSIZE - curSize) == 0) {
-    errors.push("Current appointment is full, please come back later.");
+  if(existed !== null){
+    errors.push("This link has been added before!");
   }
   if (errors.length > 0) {
     throw new UserInputError('Invalid input(s)', { errors });
   }
 }
 
+/**
+ * @author Hu Yue
+ * @description add new link to the databases
+ * @TODO: use placeholder for some params, need to Parse the url and replace
+ */
 async function issueAdd(_, { issue }) {
   await issueAddValidate(issue);
-  issue.time = new Date();
+  issue.createdTime = new Date();
   issue.id = await db.collection('issues').count()+1;
+  issue.category = "home"
+  //placeholder
+  issue.type = "Page_placeholder"
+  issue.title = "title_placeholder"
+  issue.summary = "summary_placeholder"
+  issue.noteText = "noteText_placeholder"
 
   const result = await db.collection('issues').insertOne(issue);
   const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
   return savedIssue;
 }
-
+/**
+ * @author Hu Yue
+ * @description used to connect to the database
+ */
 async function connectToDb() {
   const client = new MongoClient(url, { useNewUrlParser: true });
   await client.connect();
@@ -120,6 +120,10 @@ async function connectToDb() {
   db = client.db();
 }
 
+/**
+ * 
+ * TODO: old code from tut5
+ */
 async function issueDeleteValidate(issue){
   const curName = issue.name.replace(/(^\s*)|(\s*$)/g, "").replace(/\s+/g, ' ');
   const curPhone = issue.phone.replace(/(^\s*)|(\s*$)/g, "");
@@ -143,7 +147,10 @@ async function issueDeleteValidate(issue){
     throw new UserInputError('Invalid input(s)', { errors });
   }
 }
-
+/**
+ * 
+ * TODO: old code from tut5
+ */
 async function issueDelete(_,{issue}){
   await issueDeleteValidate(issue);
   let res = await db.collection('issues').removeOne({id:deletedId});
@@ -151,7 +158,10 @@ async function issueDelete(_,{issue}){
   return res;
 }
 
-
+/**
+ * 
+ * TODO: old code from tut5
+ */
 async function issueClearAll(_,{issue}){
   await db.collection('issues').remove({});
   return issue;
@@ -175,7 +185,11 @@ async function updateIDForDelete(deletedId){
   }
 }
 
-
+/**
+ * 
+ * @author Hu Yue
+ * @description settings for server
+ */
 const server = new ApolloServer({
   typeDefs: fs.readFileSync('schema.graphql', 'utf-8'),
   resolvers,
@@ -184,11 +198,8 @@ const server = new ApolloServer({
     return error;
   },
 });
-
 const app = express();
-
 server.applyMiddleware({ app, path: '/graphql' });
-
 (async function () {
   try {
     await connectToDb();
