@@ -1,0 +1,28 @@
+scalar GraphQLDateTime
+
+type Issue {
+  id: Int!
+  name: String
+  phone: String
+  time: GraphQLDateTime
+}
+
+"Toned down Issue, used as inputs, without server generated values."
+input IssueInputs {
+  name: String!
+  phone: String!
+}
+
+##### Top level declarations
+
+type Query {
+  about: String!
+  issueList: [Issue!]!
+}
+
+type Mutation {
+  setAboutMessage(message: String!): String
+  issueAdd(issue: IssueInputs!): Issue!
+  issueDelete(issue: IssueInputs!): Issue
+  issueClearAll(issue: IssueInputs!): Issue
+}

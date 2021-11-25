@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# PageBox IT5007 Final Proj
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 进度汇报
 
-## Available Scripts
+- hy
+    - 目前只做了前后端分离，实现了功能，后端的内容和graphql以及数据库初始化都还没写，如果里面由内容都是从tut5移植过来的，可进行修改
 
-In the project directory, you can run:
+## Environment required :
+- mongodb [skip this if you have had mongodb installed]
 
-### `npm start`
+    ```
+    apt install gnupg
+    apt install curl
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list 
+    apt update
+    apt install mongodb-org
+    apt install screen
+    screen mongod
+    ```
 
-### `npm test`
+    - If mongod screen exits instantly, then you have a problem. Do the following: mkdir -p /data/db, redo the screen mongod and press Ctrl+a followed by d to return to terminal. You are ready to run mongo CLI using $mongo.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Commands for running  PageBox
 
-### `npm run build`
+- install dependencies for client[ in "client" folder ]
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    ```
+    cd client
+    npm install
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- install dependencies for server[in "server" folder]
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    ```
+    cd ../server
+    npm install 
+    ```
 
-### `npm run eject`
+- start the mongodb and init the databases [in "server" folder]
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    ```
+    screen mongod
+    mongo issuetracker scripts/init.mongo.js
+    ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    - Press Ctrl+a followed by d to return to terminal
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- run the program [in "server" folder]
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    ```
+    npm run dev
+    ```
 
-## Learn More
+## Port Allocation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- server: `localhost:5000`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    - you can also type `localhost:5000/graphql` in your browser to test with the database.
 
-### Code Splitting
+- client: `localhost:3000`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- open `localhost:3000` in your browser and you can play with the app
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

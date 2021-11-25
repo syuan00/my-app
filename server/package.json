@@ -1,0 +1,20 @@
+{
+  "name": "it5007-proj",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "cd ../client && npm start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "apollo-server-express": "^2.3.1",
+    "graphql": "^0.13.2",
+    "mongodb": "^3.1.10",
+    "nodemon": "^1.18.9"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  }
+}
