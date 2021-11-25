@@ -3,11 +3,11 @@
 ## 进度汇报
 
 - hy
-    - 目前只做了前后端分离，实现了功能，后端的内容和graphql以及数据库初始化都还没写，如果里面由内容都是从tut5移植过来的，可进行修改
+    - 目前只做了前后端分离，后端的内容和graphql以及数据库初始化都还没写，里面由内容都是从tut5移植过来的，可进行修改
 
 ## Environment required :
 - mongodb [skip this if you have had mongodb installed]
-
+Cancel changes
     ```
     apt install gnupg
     apt install curl
