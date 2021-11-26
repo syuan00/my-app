@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useState} from "react";
+import {GoogleLogout,GoogleLogin} from 'react-google-login'
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import {
   Navbar, Nav, NavItem, NavDropdown, Tooltip, OverlayTrigger,
@@ -19,34 +20,52 @@ const initialEntities = [];
  * @author Hu Yue
  * @description define the page head for the homepage, including the app_icon, the search_bar, 3 button at the right side for login, signup and addlink
  */
-class PageHead extends React.Component {
-  render() {
+function PageHead (props){
+  
+    const [user, setUser] = useState();
+    const responseGoogle = (response) => {
+      console.log(response)
+      setUser(response.googleId)
+      const curuser = response.googleId
+      
+      props.setCurUser(curuser)
+    }
+    const logout = () => {
+      console.log("logged out!!!!")
+      setUser("")
+      props.setCurUser("")
+    }
+
+    
+
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
         <div className="container-fluid">
-
           <div className="navbar-header">
             <a className="navbar-brand" style={{ color: "black" }}><b>PageBox</b></a>
           </div>
 
-          <ul className="nav navbar-nav">
-            <form className="navbar-form" >
-              <div className="form-group" >
-                <input type="text" className="form-control" placeholder="Search"/>
-              </div>
-              <button className="btn btn-default" type="submit"> <i className="glyphicon glyphicon-search"></i>
-              </button>
-            </form>
-          </ul>
           <ul className="nav navbar-nav navbar-right">
             <li><a className = "btn btn-link" href = '#' role = "button"  data-toggle = "modal" data-target = "#myAddLinkModal"><span className="glyphicon glyphicon-link"></span> Add Link</a></li>
-            <li><a className = "btn btn-link" href = '#' role = "button" data-toggle = "modal" data-target = "#mySignUpModal"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a className = "btn btn-link" href = '#' role = "button" data-toggle="modal" data-target="#myLoginModal"> <span className="glyphicon glyphicon-log-in"></span> Login </a></li>
+            <GoogleLogin
+              clientId="766323342011-sji3911u7g14ev4hj9hj6emdlgac5pvi.apps.googleusercontent.com"
+              buttonText="Login"
+              style = {{border : 'none', outline :'none'}}
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+            />
+            <GoogleLogout
+                clientId="766323342011-sji3911u7g14ev4hj9hj6emdlgac5pvi.apps.googleusercontent.com"
+                buttonText="Logout"
+                onLogoutSuccess={logout}
+              >
+              </GoogleLogout>
           </ul>
+
         </div>
       </nav>
-    );
-  }
+    )
+  
 }
 
 /**
@@ -156,24 +175,29 @@ class Homelogic extends React.Component{
 
   constructor(){
     super()
-    this.state = {issues: [], category : "home"}
+    this.state = {issues: [], category : "home", user_id:""}
     this.addNewLink = this.addNewLink.bind(this)
+    this.setCurUser = this.setCurUser.bind(this)
     this.setCategory = this.setCategory.bind(this)
     this.changeCategoryOfOnePage = this.changeCategoryOfOnePage.bind(this)
   }
 
   componentDidMount(){
-    this.loadData(this.state.category);
+    const issue = {
+      category: this.state.category,
+      user_id: this.state.user_id
+    }
+    this.loadData(issue);
   }
 
-  async loadData(category) {
+  async loadData(issue) {
     
-    const query = `query($category : String!) {
-      issueList(category:$category) {
-        title summary link noteText
+    const query = `query($issue: IssueInputs!) {
+      issueList(issue: $issue) {
+        user_id title summary link noteText
       }
     }`;
-    const data = await graphQLFetch(query,{category});
+    const data = await graphQLFetch(query,{issue});
     if (data) {
       this.setState({ issues: data.issueList });
     }
@@ -182,6 +206,7 @@ class Homelogic extends React.Component{
 
   //add link
   async addNewLink(issue){
+    issue.user_id = this.state.user_id;
     const query = `mutation issueAdd($issue: IssueInputs!) {
       issueAdd(issue: $issue) {
         id
@@ -196,18 +221,35 @@ class Homelogic extends React.Component{
   async setCategory(mycategory){
     console.log("clientf_origin:" + mycategory)
     this.setState({ category:mycategory });
-    this.loadData(mycategory)
+    const issue = {
+      category: mycategory,
+      user_id: this.state.user_id
+    }
+    this.loadData(issue)
+  }
+
+  async setCurUser(curUser){
+    
+    this.setState({user_id:curUser})
+    const issue = {
+      category: this.state.category,
+      user_id: curUser
+    }
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1"+this.state.user_id)
+    this.loadData(issue)
   }
 
   async changeCategoryOfOnePage(issue){
+    issue.user_id = this.state.user_id;
     const query = `mutation issueChangeCategory($issue: IssueInputs!) {
       issueChangeCategory(issue: $issue) {
         id
       }
     }`;
     const data = await graphQLFetch(query, {issue});
+    issue.category = this.state.category;
     if (data) {
-      this.loadData(this.state.category);
+      this.loadData(issue);
     }
   }
 
@@ -215,7 +257,7 @@ class Homelogic extends React.Component{
     return (
       <div>
         <ModalCollection addNewLink = {this.addNewLink}/>
-        <PageHead />
+        <PageHead setCurUser = {this.setCurUser}/>
         <SideBar setCategory = {this.setCategory}/>
         <MainContent issues = {this.state.issues} changeCategoryOfOnePage = {this.changeCategoryOfOnePage}/>
       </div> 

@@ -1,8 +1,7 @@
 scalar GraphQLDateTime
 
 type Issue {
-  # user_id: Int!
-  # user_password: String!
+  user_id: String!
   id: Int!
   type: String!
   title: String
@@ -21,6 +20,7 @@ type Issue {
 
 "Toned down Issue, used as inputs, without server generated values."
 input IssueInputs {
+  user_id: String
   link: String
   category:String
 }
@@ -28,7 +28,7 @@ input IssueInputs {
 ##### Top level declarations
 type Query {
   about: String!
-  issueList(category : String!): [Issue!]!
+  issueList(issue : IssueInputs): [Issue!]!
 }
 
 type Mutation {

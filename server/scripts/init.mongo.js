@@ -13,6 +13,7 @@ db.issues.remove({});
 
 const issuesDB = [
     {
+      user_id:"111634259262178726353",
       type: "page", id: 2, title: 'How to Take Care of a Cat', 
       link: 'https://www.wikihow.com/Take-Care-of-a-Cat', 
       summary: "This article was co-authored by Molly DeVoss. Molly DeVoss is a Certified Feline Training and Behavior \
@@ -52,6 +53,7 @@ const issuesDB = [
       lastMotifiedTime: null,
     },
     {
+      user_id:"111634259262178726353",
       type: "page", id: 1, title: 'Spicy Ahi Poke Salad', 
       link: 'https://www.allrecipes.com/recipe/256937/spicy-ahi-poke-salad/', 
       summary: "Explore Allrecipes Allrecipes Allrecipes Find a Recipe Explore The Foolproof Way to Cook Bacon in the Microwave \

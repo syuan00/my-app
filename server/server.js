@@ -64,8 +64,23 @@ function setAboutMessage(_, { message }) {
  * @author Hu Yue
  * @description query support: get the issueList
  */
-async function issueList(_,{category}) {
-  const issues = await db.collection('issues').find({category:category}).toArray();
+async function getListValidation(issue){
+  const errors = [];
+  if(issue.user_id == null || issue.user_id.length == 0){
+    errors.push("Please login First!")
+  }
+  if (errors.length > 0) {
+    throw new UserInputError('Invalid input(s)', { errors });
+  }
+}
+
+
+
+async function issueList(_,{issue}) {
+  await getListValidation(issue)
+  const category = issue.category
+  const userId = issue.user_id
+  const issues = await db.collection('issues').find({user_id:userId, category:category}).toArray();
   return issues;
 }
 
