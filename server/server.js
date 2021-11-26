@@ -77,7 +77,7 @@ async function getListValidation(issue){
 
 
 async function issueList(_,{issue}) {
-  await getListValidation(issue)
+  // await getListValidation(issue)
   const category = issue.category
   const userId = issue.user_id
   const issues = await db.collection('issues').find({user_id:userId, category:category}).toArray();
@@ -112,6 +112,7 @@ async function issueAddValidate(issue) {
  * @TODO: use placeholder for some params, need to Parse the url and replace
  */
 async function issueAdd(_, { issue }) {
+  await getListValidation(issue);
   await issueAddValidate(issue);
   issue.createdTime = new Date();
   issue.id = await db.collection('issues').count()+1;
@@ -128,6 +129,7 @@ async function issueAdd(_, { issue }) {
 }
 
 async function issueChangeCategory(_,{issue}){
+  await getListValidation(issue);
   const curLink = issue.link;
   const curCategory = issue.category;
   const newIssue = await db.collection('issues').updateOne({link:curLink},{$set:{category:curCategory}});

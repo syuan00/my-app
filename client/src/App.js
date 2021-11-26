@@ -27,7 +27,6 @@ function PageHead (props){
       console.log(response)
       setUser(response.googleId)
       const curuser = response.googleId
-      
       props.setCurUser(curuser)
     }
     const logout = () => {
@@ -35,9 +34,6 @@ function PageHead (props){
       setUser("")
       props.setCurUser("")
     }
-
-    
-
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
         <div className="container-fluid">
@@ -213,8 +209,9 @@ class Homelogic extends React.Component{
       }
     }`;
     const data = await graphQLFetch(query, {issue});
+    issue.category = "home"
     if (data) {
-      this.loadData(this.state.category);
+      this.loadData(issue);
     }
   }
 
