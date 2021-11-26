@@ -53,7 +53,7 @@ const resolvers = {
 
 /**
  * @author Hu Yue
- * @description query sipport: get the message
+ * @description query support: get the message
  */
 function setAboutMessage(_, { message }) {
   return aboutMessage = message;
@@ -62,8 +62,8 @@ function setAboutMessage(_, { message }) {
  * @author Hu Yue
  * @description query support: get the issueList
  */
-async function issueList() {
-  const issues = await db.collection('issues').find({}).toArray();
+async function issueList(_,{category}) {
+  const issues = await db.collection('issues').find({category:category}).toArray();
   return issues;
 }
 

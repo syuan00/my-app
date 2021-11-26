@@ -60,34 +60,25 @@ class SideBar extends React.Component {
     this.handleMark = this.handleMark.bind(this)
     this.handleRead = this.handleRead.bind(this)
     this.handleFolder = this.handleFolder.bind(this)
-    this.state = {
-      MainContentType: "home"
-    }
   }
-
-
   handleMark(e) {
     e.preventDefault();
-    this.setState({MainContentType: "mark"});
-    this.props.setCategory(this.state.MainContentType)
+    this.props.setCategory("mark")
   }
 
   handleHome(e) {
     e.preventDefault();
-    this.setState({MainContentType: "home"});
-    this.props.setCategory(this.state.MainContentType)
+    this.props.setCategory("home")
   }
 
   handleRead(e) {
     e.preventDefault();
-    this.setState({MainContentType: "read"});
-    this.props.setCategory(this.state.MainContentType)
+    this.props.setCategory("read")
   }
 
   handleFolder(e) {
     e.preventDefault();
-    this.setState({MainContentType: "folder"});
-    this.props.setCategory(this.state.MainContentType)
+    this.props.setCategory("folder")
   }
 
   render() {
@@ -131,13 +122,16 @@ function MainContent(props){
  * @description used to fetch data from the backend
  */
 async function graphQLFetch(query, variables = {}) {
+  console.log("clientft:" + variables)
   try {
     const response = await fetch('http://localhost:5000/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json'},
-      body: JSON.stringify({ query, variables })
+      body: JSON.stringify({ query, variables}) 
     });
+    console.log("client body:" + JSON.stringify({ query, variables}) )
     const body = await response.text();
+    
     const result = JSON.parse(body, jsonDateReviver);
 
     if (result.errors) {
@@ -168,16 +162,17 @@ class Homelogic extends React.Component{
   }
 
   componentDidMount(){
-    this.loadData();
+    this.loadData(this.state.category);
   }
 
-  async loadData() {
-    const query = `query {
-      issueList {
+  async loadData(category) {
+    
+    const query = `query($category : String!) {
+      issueList(category:$category) {
         title summary link noteText
       }
     }`;
-    const data = await graphQLFetch(query);
+    const data = await graphQLFetch(query,{category});
     if (data) {
       this.setState({ issues: data.issueList });
     }
@@ -193,13 +188,14 @@ class Homelogic extends React.Component{
     }`;
     const data = await graphQLFetch(query, {issue});
     if (data) {
-      this.loadData();
+      this.loadData(this.state.category);
     }
   }
 
-  setCategory(mycategory){
-  
+  async setCategory(mycategory){
+    console.log("clientf_origin:" + mycategory)
     this.setState({ category:mycategory });
+    this.loadData(mycategory)
   }
 
   render(){
@@ -208,7 +204,7 @@ class Homelogic extends React.Component{
         <ModalCollection addNewLink = {this.addNewLink}/>
         <PageHead />
         <SideBar setCategory = {this.setCategory}/>
-        <MainContent issues = {this.state.issues} category = {this.state.category}/>
+        <MainContent issues = {this.state.issues}/>
       </div> 
     );
   }

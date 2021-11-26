@@ -23,14 +23,11 @@ type Issue {
 input IssueInputs {
   link: String
 }
-input SideBarTargetCategory{
-  category:String
-}
 
 ##### Top level declarations
 type Query {
   about: String!
-  issueList: [Issue!]!
+  issueList(category : String!): [Issue!]!
 }
 
 type Mutation {
