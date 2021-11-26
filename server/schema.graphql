@@ -22,6 +22,7 @@ type Issue {
 "Toned down Issue, used as inputs, without server generated values."
 input IssueInputs {
   link: String
+  category:String
 }
 
 ##### Top level declarations
@@ -33,6 +34,9 @@ type Query {
 type Mutation {
   setAboutMessage(message: String!): String
   issueAdd(issue: IssueInputs!): Issue!
+  issueChangeCategory(issue: IssueInputs!):Issue!
+
+
   issueDelete(issue: IssueInputs!): Issue
   issueClearAll(issue: IssueInputs!): Issue
 }

@@ -45,6 +45,8 @@ const resolvers = {
   Mutation: {
     setAboutMessage,
     issueAdd,
+    issueChangeCategory,
+
     issueDelete,
     issueClearAll,
   },
@@ -109,6 +111,16 @@ async function issueAdd(_, { issue }) {
   const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
   return savedIssue;
 }
+
+async function issueChangeCategory(_,{issue}){
+  const curLink = issue.link;
+  const curCategory = issue.category;
+  const newIssue = await db.collection('issues').updateOne({link:curLink},{$set:{category:curCategory}});
+  const savedIssue = await db.collection('issues').findOne({link:curLink});
+  return savedIssue
+}
+
+
 /**
  * @author Hu Yue
  * @description used to connect to the database

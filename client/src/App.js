@@ -105,7 +105,7 @@ class SideBar extends React.Component {
  * @description define the main content of the homepage, including the 
  */
 function MainContent(props){
-    const IssuePanels = props.issues.map(issue =>  <IssuePanel key={issue.id} issue={issue} />)
+    const IssuePanels = props.issues.map(issue =>  <IssuePanel key={issue.id} issue={issue} changeCategoryOfOnePage = {props.changeCategoryOfOnePage}/>)
     return (
       <div>
         <div style={{ marginLeft: "18%" ,marginTop:"75px"}}>
@@ -159,6 +159,7 @@ class Homelogic extends React.Component{
     this.state = {issues: [], category : "home"}
     this.addNewLink = this.addNewLink.bind(this)
     this.setCategory = this.setCategory.bind(this)
+    this.changeCategoryOfOnePage = this.changeCategoryOfOnePage.bind(this)
   }
 
   componentDidMount(){
@@ -198,13 +199,25 @@ class Homelogic extends React.Component{
     this.loadData(mycategory)
   }
 
+  async changeCategoryOfOnePage(issue){
+    const query = `mutation issueChangeCategory($issue: IssueInputs!) {
+      issueChangeCategory(issue: $issue) {
+        id
+      }
+    }`;
+    const data = await graphQLFetch(query, {issue});
+    if (data) {
+      this.loadData(this.state.category);
+    }
+  }
+
   render(){
     return (
       <div>
         <ModalCollection addNewLink = {this.addNewLink}/>
         <PageHead />
         <SideBar setCategory = {this.setCategory}/>
-        <MainContent issues = {this.state.issues}/>
+        <MainContent issues = {this.state.issues} changeCategoryOfOnePage = {this.changeCategoryOfOnePage}/>
       </div> 
     );
   }
@@ -214,6 +227,53 @@ class Homelogic extends React.Component{
  * @description the helper class for class MainContent, used to show data in the left summary modal 
  */
 class IssuePanel extends React.Component {
+  constructor(){
+    super()
+    this.handleHome = this.handleHome.bind(this)
+    this.handleMark = this.handleMark.bind(this)
+    this.handleRead = this.handleRead.bind(this)
+    this.handleFolder = this.handleFolder.bind(this)
+  }
+
+  handleHome(e){
+    e.preventDefault();
+    const issue = this.props.issue;
+    const updatedissue = {
+      category: "home",
+      link: issue.link
+    }
+    this.props.changeCategoryOfOnePage(updatedissue);
+  }
+
+  handleMark(e){
+    e.preventDefault();
+    const issue = this.props.issue;
+    const updatedissue = {
+      category: "mark",
+      link: issue.link
+    }
+    this.props.changeCategoryOfOnePage(updatedissue);
+  }
+
+  handleRead(e){
+    e.preventDefault();
+    const issue = this.props.issue;
+    const updatedissue = {
+      category: "read",
+      link: issue.link
+    }
+    this.props.changeCategoryOfOnePage(updatedissue);
+  }
+
+  handleFolder(e){
+    e.preventDefault();
+    const issue = this.props.issue;
+    const updatedissue = {
+      category: "folder",
+      link: issue.link
+    }
+    this.props.changeCategoryOfOnePage(updatedissue);
+  }
 
   render() {
     const issue = this.props.issue;
@@ -238,9 +298,10 @@ class IssuePanel extends React.Component {
 
             <div class="panel-footer">
              <div  class="btn-group btn-group-xs">
-                <button class = 'btn'><span className="glyphicon glyphicon-bookmark"></span></button>
-                <button class = 'btn'><span className="glyphicon glyphicon-eye-open"></span></button>
-                <button class = 'btn'><span className="glyphicon glyphicon-folder-open"></span></button>
+                <button class = 'btn' onClick = {this.handleHome}><span className="glyphicon glyphicon-home"></span></button>
+                <button class = 'btn' onClick = {this.handleMark}><span className="glyphicon glyphicon-bookmark"></span></button>
+                <button class = 'btn' onClick = {this.handleRead}><span className="glyphicon glyphicon-eye-open"></span></button>
+                <button class = 'btn' onClick = {this.handleFolder}><span className="glyphicon glyphicon-folder-open"></span></button>
               </div>
           </div>
 
