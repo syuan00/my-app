@@ -10,16 +10,15 @@ const issue = require('./issue.js');
   Query: {
     about: about.getMessage,
     issueList: issue.list,
-    // issue: issue.get, //TODO: 待实现
+    issue: issue.get, //TODO: 待实现
   },
   Mutation: {
     setAboutMessage: about.setMessage,
     issueAdd: issue.add,
     issueChangeCategory: issue.changeCategory,
-
+    issueUpdate: issue.update,
     issueDelete: issue.delete,
     issueClearAll: issue.clearAll,
-    // issueUpdate: issue.update,
   },
   GraphQLDateTime,
 };

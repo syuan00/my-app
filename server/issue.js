@@ -1,6 +1,17 @@
 const { UserInputError } = require('apollo-server-express');
 const { getDb, getNextSequence } = require('./db.js');
 
+
+/**
+ * @author Hu Xuan
+ * @description get an issue by id
+ */
+ async function get(_, { id }) {
+    const db = getDb();
+    const issue = await db.collection('issues').findOne({ id });
+    return issue;
+}
+
 /**
  * @author Hu Yue
  * @description query support: get the issueList
@@ -79,6 +90,40 @@ async function changeCategory(_,{issue}){
     const savedIssue = await db.collection('issues').findOne({link:curLink});
     return savedIssue
 }
+
+/**
+ * @author Hu Xuan
+ * @description 目前仅用于update函数的validate函数
+ */
+function validate(issue) {
+    const errors = [];
+    // if (issue.title.length < 3) {
+    //   errors.push('Field "title" must be at least 3 characters long.');
+    // }
+    // if (issue.status === 'Assigned' && !issue.owner) {
+    //   errors.push('Field "owner" is required when status is "Assigned"');
+    // }
+    if (errors.length > 0) {
+      throw new UserInputError('Invalid input(s)', { errors });
+    }
+}
+
+/**
+ * @author Hu Xuan
+ * @description update an issue
+ */
+ async function update(_, { id, changes }) {
+    const db = getDb();
+    if (changes.title || changes.tags || changes.text || changes.snapshot || changes.noteText) {
+      const issue = await db.collection('issues').findOne({ id });
+      Object.assign(issue, changes);
+      validate(issue);
+    }
+    await db.collection('issues').updateOne({ id }, { $set: changes });
+    const savedIssue = await db.collection('issues').findOne({ id });
+    return savedIssue;
+}
+
 /**
  * 
  * TODO: old code from tut5
@@ -130,17 +175,6 @@ async function clearAll(_,{issue}){
     return issue;
 }
   
-  
-// // helper function
-// function checkValidPhoneNumber(phone) {
-// for (var i = 0; i < phone.length; i++) {
-//     if (phone[i] > '9' || phone[i] < '0') {
-//     return false;
-//     }
-// }
-// return true;
-// }
-  
 async function updateIDForDelete(deletedId){
     const db = getDb();
     curNum = await db.collection('issues').count();
@@ -153,8 +187,8 @@ module.exports = {
     list,
     add,
     changeCategory,
-    // get,
-    // update,
+    get,
+    update,
     delete: remove,
     clearAll,
 };

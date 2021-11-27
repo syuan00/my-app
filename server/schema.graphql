@@ -53,9 +53,7 @@ type Mutation {
   setAboutMessage(message: String!): String
   issueAdd(issue: IssueInputs!): Issue!
   issueChangeCategory(issue: IssueInputs!):Issue!
-
   issueUpdate(id: Int!, changes: IssueUpdateInputs!): Issue!
-
   issueDelete(issue: IssueInputs!): Issue
   issueClearAll(issue: IssueInputs!): Issue
 }
