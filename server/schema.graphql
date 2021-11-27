@@ -1,5 +1,12 @@
 scalar GraphQLDateTime
 
+enum CategoryType {
+  home 
+  mark 
+  read 
+  folder
+}
+
 type Issue {
   user_id: String!
   id: Int!
@@ -9,7 +16,7 @@ type Issue {
   summary: String
   summaryImage: String
   createdTime: GraphQLDateTime
-  category:String # home mark read folder
+  category: CategoryType # home mark read folder
   folder: String
   tags: String
   text: String
@@ -22,13 +29,24 @@ type Issue {
 input IssueInputs {
   user_id: String
   link: String
-  category:String
+  category: CategoryType = home
+}
+
+"""Inputs for issueUpdate: all are optional. Whichever is specified will
+be set to the given value, undefined fields will remain unmodified."""
+input IssueUpdateInputs {
+  title: String
+  tags: String
+  text: String
+  snapshot: String
+  noteText: String
 }
 
 ##### Top level declarations
 type Query {
   about: String!
   issueList(issue : IssueInputs): [Issue!]!
+  issue(id: Int!): Issue!
 }
 
 type Mutation {
@@ -36,6 +54,7 @@ type Mutation {
   issueAdd(issue: IssueInputs!): Issue!
   issueChangeCategory(issue: IssueInputs!):Issue!
 
+  issueUpdate(id: Int!, changes: IssueUpdateInputs!): Issue!
 
   issueDelete(issue: IssueInputs!): Issue
   issueClearAll(issue: IssueInputs!): Issue
