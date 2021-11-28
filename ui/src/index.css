@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+input[type = url]{
+  width: 85%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  margin-left: 1em;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+div[type = summary]{
+  width: 100%;
+  height: 10em;
+  padding: 12px 20px;
+  margin: 8px 0;
+  resize:none;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+div[type = myinput]{
+  width: 100%;
+  height: 3.5em;
+  padding: 12px 20px;
+  margin: 8px 0;
+  resize:none;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+ 
+}

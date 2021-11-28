@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "client": "cd ../client && npm start",
+    "ui": "cd ../ui && npm start",
+    "cli": "cd ../cli && npm start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev-client": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev-ui": "concurrently --kill-others-on-fail \"npm run server\" \"npm run ui\"",
+    "dev-cli": "concurrently --kill-others-on-fail \"npm run server\" \"npm run cli\""
   },
   "dependencies": {
     "apollo-server-express": "^2.3.1",

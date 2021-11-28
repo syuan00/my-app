@@ -76,8 +76,9 @@ export default class IssueEdit extends React.Component {
   async loadData() {
     const query = `query issue($id: Int!) {
       issue(id: $id) {
-        id title status owner
-        effort created due description
+        id title category 
+        link createdTime tags
+        tags text snapshot noteText
       }
     }`;
 
@@ -106,31 +107,34 @@ export default class IssueEdit extends React.Component {
       );
     }
 
-    const { issue: { title, status } } = this.state;
-    const { issue: { owner, effort, description } } = this.state;
-    const { issue: { created, due } } = this.state;
+    const { issue: { title, category } } = this.state;
+    const { issue: { link, createdTime, tags } } = this.state;
+    const { issue: { text} } = this.state;
 
     return (
       <form onSubmit={this.handleSubmit}>
         <h3>{`Editing issue: ${id}`}</h3>
+        <h1>{title}</h1>
+        <p>{link} · {createdTime}</p>
+        <p>{category} · {tags}</p>
         <table>
           <tbody>
             <tr>
               <td>Created:</td>
-              <td>{created.toDateString()}</td>
+              {/* <td>{created}</td> */}
             </tr>
             <tr>
               <td>Status:</td>
               <td>
-                <select name="status" value={status} onChange={this.onChange}>
-                  <option value="New">New</option>
-                  <option value="Assigned">Assigned</option>
-                  <option value="Fixed">Fixed</option>
-                  <option value="Closed">Closed</option>
+                <select name="category" value={category} onChange={this.onChange}>
+                  <option value="home">home</option>
+                  <option value="mark">mark</option>
+                  <option value="read">read</option>
+                  <option value="foler">folder</option>
                 </select>
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>Owner:</td>
               <td>
                 <input
@@ -140,8 +144,8 @@ export default class IssueEdit extends React.Component {
                   key={id}
                 />
               </td>
-            </tr>
-            <tr>
+            </tr> */}
+            {/* <tr>
               <td>Effort:</td>
               <td>
                 <input
@@ -151,8 +155,8 @@ export default class IssueEdit extends React.Component {
                   key={id}
                 />
               </td>
-            </tr>
-            <tr>
+            </tr> */}
+            {/* <tr>
               <td>Due:</td>
               <td>
                 <input
@@ -163,8 +167,8 @@ export default class IssueEdit extends React.Component {
                   key={id}
                 />
               </td>
-            </tr>
-            <tr>
+            </tr> */}
+            {/* <tr>
               <td>Title:</td>
               <td>
                 <input
@@ -175,7 +179,7 @@ export default class IssueEdit extends React.Component {
                   key={id}
                 />
               </td>
-            </tr>
+            </tr> */}
             <tr>
               <td>Description:</td>
               <td>
@@ -184,7 +188,7 @@ export default class IssueEdit extends React.Component {
                   rows={8}
                   cols={50}
                   name="description"
-                  value={description}
+                  value={text}
                   onChange={this.onChange}
                   key={id}
                 />
