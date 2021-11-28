@@ -18,11 +18,11 @@ type Issue {
   createdTime: GraphQLDateTime
   category: CategoryType # home mark read folder
   folder: String
-  tags: String
+  tags: [String]
   text: String
   snapshot: String
   noteText: String
-  lastMotifiedTime: String
+  lastModifiedTime: String
 }
 
 "Toned down Issue, used as inputs, without server generated values."
@@ -35,10 +35,6 @@ input IssueInputs {
 """Inputs for issueUpdate: all are optional. Whichever is specified will
 be set to the given value, undefined fields will remain unmodified."""
 input IssueUpdateInputs {
-  title: String
-  tags: String
-  text: String
-  snapshot: String
   noteText: String
 }
 

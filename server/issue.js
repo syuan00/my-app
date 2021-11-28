@@ -63,7 +63,7 @@ async function list(_,{issue}) {
  * @description add new link to the databases
  * @TODO: use placeholder for some params, need to Parse the url and replace
  */
- async function add(_, { issue }) {
+async function add(_, { issue }) {
     const db = getDb();
     await getListValidation(issue);
     await issueAddValidate(issue);
@@ -79,7 +79,7 @@ async function list(_,{issue}) {
     const result = await db.collection('issues').insertOne(issue);
     const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
     return savedIssue;
-  }
+}
 
 async function changeCategory(_,{issue}){
     const db = getDb();
@@ -114,11 +114,13 @@ function validate(issue) {
  */
  async function update(_, { id, changes }) {
     const db = getDb();
-    if (changes.title || changes.tags || changes.text || changes.snapshot || changes.noteText) {
+    if (changes.noteText) {
+      changes.lastModifiedTime = new Date();
       const issue = await db.collection('issues').findOne({ id });
       Object.assign(issue, changes);
       validate(issue);
     }
+
     await db.collection('issues').updateOne({ id }, { $set: changes });
     const savedIssue = await db.collection('issues').findOne({ id });
     return savedIssue;

@@ -50,7 +50,7 @@ const issuesDB = [
       ",
       snapshot: "https://tva1.sinaimg.cn/large/008i3skNly1gv5zpmrtvwj60u09kxkdb02.jpg",
       noteText: null,
-      lastMotifiedTime: null,
+      lastModifiedTime: null,
     },
     {
       user_id:"111634259262178726353",
@@ -101,7 +101,7 @@ const issuesDB = [
       1. Combine tuna, green onion, macadamia nuts, cilantro, lime juice, sesame oil, ginger, red pepper flakes, and sriracha sauce in a bowl; \n\
       2. Refrigerate for 2 hours.\n\
       ",
-      lastMotifiedTime: new Date('2021-09-03'),
+      lastModifiedTime: new Date('2021-09-03'),
     },
     {
       user_id:"116763752579496784797",
@@ -141,7 +141,7 @@ const issuesDB = [
       ",
       snapshot: "https://tva1.sinaimg.cn/large/008i3skNly1gv5zpmrtvwj60u09kxkdb02.jpg",
       noteText: null,
-      lastMotifiedTime: null,
+      lastModifiedTime: null,
     },
     {
       user_id:"116763752579496784797",
@@ -151,7 +151,7 @@ const issuesDB = [
       The Foolproof Way to Cook Bacon in the Microwave",
       summaryImage: "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F8159186.jpg&q=85",
       createdTime: new Date('2021-09-03'),
-      category:"read",
+      category:"home",
       foler: "Recipes",
       tags: ["seafoods", "salad"],
       text: "<p>Ingredients</p>\
@@ -192,7 +192,7 @@ const issuesDB = [
       1. Combine tuna, green onion, macadamia nuts, cilantro, lime juice, sesame oil, ginger, red pepper flakes, and sriracha sauce in a bowl; \n\
       2. Refrigerate for 2 hours.\n\
       ",
-      lastMotifiedTime: new Date('2021-09-03'),
+      lastModifiedTime: new Date('2021-09-03'),
     },
   ];
 
@@ -216,4 +216,4 @@ db.issues.createIndex({ tags: 1 });
 db.issues.createIndex({ text: 1 });
 db.issues.createIndex({ snapshot: 1 });
 db.issues.createIndex({ noteText: 1 });
-db.issues.createIndex({ lastMotifiedTime: 1 });
+db.issues.createIndex({ lastModifiedTime: 1 });

@@ -1,8 +1,7 @@
 import React from 'react';
-import { useState } from "react";
 import {
-  Navbar, Nav, NavItem, NavDropdown,
-  MenuItem, Glyphicon,
+  Navbar, Nav, NavItem, 
+  // NavDropdown, MenuItem, Glyphicon,
   Grid,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -12,12 +11,15 @@ import Contents from './Contents.js';
 import IssueAddNavItem from './IssueAddNavItem.js';
 
 function NavBar(props) {
+
+  // google login helper function
   const responseGoogle = (response) => {
     console.log(response);
     const curuser = response.googleId;
     props.setCurUser(curuser);
   }
 
+  // google logout helper function
   const logout = () => {
     console.log("logged out!!!!")
     props.setCurUser("")
@@ -41,13 +43,14 @@ function NavBar(props) {
       </Nav>
       <Nav pullRight>
         <IssueAddNavItem user_id={props.user_id}/>
+        {/* 理论上应该能点开一个下拉页面，目前没反应，但不重要，这个部分之后也用不到
         <NavDropdown
           id="user-dropdown"
           title={<Glyphicon glyph="option-vertical" />}
           noCaret
         >
           <MenuItem>About</MenuItem>
-        </NavDropdown>
+        </NavDropdown> */}
         <GoogleLogin
           clientId="766323342011-sji3911u7g14ev4hj9hj6emdlgac5pvi.apps.googleusercontent.com"
           buttonText="Login"
@@ -61,7 +64,6 @@ function NavBar(props) {
           onLogoutSuccess={logout}
         />
       </Nav>
-
     </Navbar>
   );
 }
@@ -88,8 +90,8 @@ export default class Page extends React.Component{
     this.setCurUser = this.setCurUser.bind(this);
   }
 
-  async setCurUser(curUser){
-    this.setState({user_id:curUser})
+  async setCurUser(curUser) {
+    this.setState({ user_id: curUser })
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+this.state.user_id)
   }
 

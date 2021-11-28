@@ -48,7 +48,7 @@ class IssueAddNavItem extends React.Component {
     this.hideModal();
     const form = document.forms.issueAdd;
     const issue = {
-      user_id: this.props.user_id,//"116763752579496784797",
+      user_id: this.props.user_id,
       link: form.link.value,
     };
     const query = `mutation issueAdd($issue: IssueInputs!) {
