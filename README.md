@@ -21,20 +21,22 @@
         - 实现Edit界面
 
 ## Component Hierachy
-    - index.js -> App.js -> Page.js
-        - NavBar
-            - IssueAddNavItem [TODO: url解析功能]
-        - Contents
-            - IssueList [TODO: 把Homelogic搬进去\*\*\*]
-                - IssueFilter
-                - IssueTable
-                - ...
-            - IssueEdit [TODO: 打算用html的隐藏实现三种阅读编辑模式切换，类似Tut2，把#free slots隐藏以及Homepage和Waitlist之间的切换]
-            - IssueReport [可以删除，先放着]
-        - Footer
+- index.js -> App.js -> Page.js
+    - NavBar
+        - IssueAddNavItem [TODO: url解析功能]
+    - Contents
+        - IssueList [TODO: 把Homelogic搬进去\*\*\*]
+            - IssueFilter
+            - IssueTable
+            - ...
+        - IssueEdit [TODO: 打算用html的隐藏实现三种阅读编辑模式切换，类似Tut2，把#free slots隐藏以及Homepage和Waitlist之间的切换]
+        - IssueReport [可以删除，先放着]
+    - Footer
 
 \* 除了IssueList以及其所调用的代码\*\*，其他代码都已仿照教材11章末时的代码。
+
 \*\* 指没有仔细检查，参考代码版本可能是9-11章之间的，有时跑不出就会往前退。
+
 \*\*\* 侧边栏可以参考IssueFilter，IssuePanel取代IssueTable，其中的按钮、链接可能可以参考IssueRow中的“Edit”和“Select”。
 
 ## Environment required :
