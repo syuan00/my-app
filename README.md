@@ -13,6 +13,7 @@
         - 添加了部分注释，简略
     
     - 11.28 凌晨
+        - init.mongo.js改为4条，新增2条我的user_id
         - 后端代码拆开
         - 修改了schema.graphql、issue.js
 
@@ -35,7 +36,7 @@
 
 \* 除了IssueList以及其所调用的代码\*\*，其他代码都已仿照教材11章末时的代码。
 
-\*\* 指没有仔细检查，参考代码版本可能是9-11章之间的，有时跑不出就会往前退。
+\*\* 指没有仔细检查，参考代码版本可能是9-11章之间的，因为跑不通时会退一下版本。
 
 \*\*\* 侧边栏可以参考IssueFilter，IssuePanel取代IssueTable，其中的按钮、链接可能可以参考IssueRow中的“Edit”和“Select”。
 
@@ -62,8 +63,16 @@ Cancel changes
 - install dependencies for client[ in "client" folder ]
 
     ```
-    cd client
+    cd client 
     npm install
+    ```
+
+- install dependencies for client[ in "cli" folder ]
+
+    ```
+    cd ../cli 
+    npm install
+    ln -s ../node_modules/bootstrap/dist public/bootstrap
     ```
 
 - install dependencies for server[in "server" folder]
