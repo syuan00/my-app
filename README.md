@@ -19,6 +19,7 @@
 
     - 11.29 03:00
         - 以教材11章末时的代码为模板，模块化前端代码
+        - Google登陆：user_id是Page的state，作为props传给调用的函数；同时Page中定义了setCurUser函数用于setState，其作为参数传给NavBar，NavBar相应谷歌登录时可以调用该函数改变use_id的值
         - 实现Edit界面
 
 ## Component Hierachy
