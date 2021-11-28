@@ -11,6 +11,31 @@
         - App.js获取initialEntries已经修改成从后端获取，运行之前记得运行数据库初始化代码，来加载初始数据
             - To hx： initialEntries 接口仍然放在代码中了，发现你写的一部分内容是直接获取的initialEntries[i]，可能需要你改一下你引用该部分的代码
         - 添加了部分注释，简略
+    
+    - 11.28 凌晨
+        - 后端代码拆开
+        - 修改了schema.graphql、issue.js
+
+    - 11.29 03:00
+        - 以教材11章末时的代码为模板，模块化前端代码
+        - 实现Edit界面
+
+## Component Hierachy
+    - index.js -> App.js -> Page.js
+        - NavBar
+            - IssueAddNavItem [TODO: url解析功能]
+        - Contents
+            - IssueList [TODO: 把Homelogic搬进去\*\*\*]
+                - IssueFilter
+                - IssueTable
+                - ...
+            - IssueEdit [TODO: 打算用html的隐藏实现三种阅读编辑模式切换，类似Tut2，把#free slots隐藏以及Homepage和Waitlist之间的切换]
+            - IssueReport [可以删除，先放着]
+        - Footer
+
+\* 除了IssueList以及其所调用的代码\*\*，其他代码都已仿照教材11章末时的代码。
+\*\* 指没有仔细检查，参考代码版本可能是9-11章之间的，有时跑不出就会往前退。
+\*\*\* 侧边栏可以参考IssueFilter，IssuePanel取代IssueTable，其中的按钮、链接可能可以参考IssueRow中的“Edit”和“Select”。
 
 ## Environment required :
 - mongodb [skip this if you have had mongodb installed]
@@ -56,10 +81,15 @@ Cancel changes
     - Press Ctrl+a followed by d to return to terminal
 
 - run the program [in "server" folder]
-
+    Homelogic的界面
     ```
-    npm run dev
+    npm run dev-client
     ```
+    Home是表格，edit能用的界面
+    ```
+    npm run dev-cli
+    ```
+    这两者后端代码是一样的。
 
 ## Port Allocation
 
