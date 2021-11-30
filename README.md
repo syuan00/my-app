@@ -31,6 +31,8 @@
             - SideBar
             - MainContent -> IssuePanel -> IssueOperators [TODO：增加功能1：编辑title、link、summary、tags；增加功能2: Delete；可能可以参考09.03，09.06，10.13节]
         - PageNote [TODO: 用html的隐藏实现三种阅读编辑模式切换]
+            - TextInput
+            - Toast
         - IssueReport [可以删除，先放着]
     - Footer
 TODO：Google Login、Performance、Report
