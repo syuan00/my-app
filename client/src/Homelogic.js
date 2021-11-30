@@ -13,10 +13,6 @@ function jsonDateReviver(key, value) {
   if (dateRegex.test(value)) return new Date(value);
   return value;
 }
-
-
-const initialEntities = [];
-
 /**
  * @author Hu Yue
  * @description define the page head for the homepage, including the app_icon, the search_bar, 3 button at the right side for login, signup and addlink
@@ -191,7 +187,7 @@ class Homelogic extends React.Component{
     
     const query = `query($issue: IssueInputs!) {
       issueList(issue: $issue) {
-        user_id title summary link noteText
+        user_id id title summary link noteText
       }
     }`;
     const data = await graphQLFetch(query,{issue});
@@ -274,7 +270,7 @@ class IssuePanel extends React.Component {
     this.handleRead = this.handleRead.bind(this)
     this.handleFolder = this.handleFolder.bind(this)
   }
-
+  
   handleHome(e){
     e.preventDefault();
     const issue = this.props.issue;
@@ -329,6 +325,7 @@ class IssuePanel extends React.Component {
                 <a href={issue.link}><span className="glyphicon glyphicon-link"></span></a>
                 {issue.title}
                 <a className = "btn btn-link" href = '#' role = "button" data-toggle="modal" data-target="#myEditModal"  style={{ marginLeft: "1em" }}>  <span class="glyphicon glyphicon-pencil"></span> </a>
+                <IssueRow key={issue.id} issue={issue} />
               </h3>
             </div>
 
@@ -342,6 +339,7 @@ class IssuePanel extends React.Component {
                 <button class = 'btn' onClick = {this.handleMark}><span className="glyphicon glyphicon-bookmark"></span></button>
                 <button class = 'btn' onClick = {this.handleRead}><span className="glyphicon glyphicon-eye-open"></span></button>
                 <button class = 'btn' onClick = {this.handleFolder}><span className="glyphicon glyphicon-folder-open"></span></button>
+                
               </div>
           </div>
 
@@ -394,6 +392,16 @@ class IssuePanel extends React.Component {
     )
   }
 }
+const IssueRow = withRouter(({ issue, location: { search } }) => {
+  const selectLocation = { pathname: `/issues/${issue.id}`, search };
+  return (
+   
+        <Link to={`/edit/${issue.id}`} style = {{marginRight:"0"}}>Edit</Link>
+   
+  
+  );
+});
+
 /**
  * @author Hu Yue
  * @description all the modals used in homepage and some actions, including the login modal, the signup modal, the addLink modal

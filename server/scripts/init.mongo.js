@@ -14,9 +14,9 @@ db.issues.remove({});
 const issuesDB = [
     {
       user_id:"111634259262178726353",
-      type: "page", id: 2, title: 'How to Take Care of a Cat', 
+      type: "page", id: 2, title: 'hy_How to Take Care of a Cat', 
       link: 'https://www.wikihow.com/Take-Care-of-a-Cat', 
-      summary: "This article was co-authored by Molly DeVoss. Molly DeVoss is a Certified Feline Training and Behavior \
+      summary: "hy_This article was co-authored by Molly DeVoss. Molly DeVoss is a Certified Feline Training and Behavior \
       Specialist (CFTBS), a Certified Cat Behavior Consultant (CCBC), a Fear Free Certified Trainer (FFCT), and the \
       Founder of Cat Behavior Solutions. Molly specializes in using positive reinforcement to modify and",
       summaryImage: "https://www.wikihow.com/Take-Care-of-a-Cat#/Image:Take-Care-of-a-Cat-Step-6-Version-3.jpg",
@@ -54,9 +54,9 @@ const issuesDB = [
     },
     {
       user_id:"111634259262178726353",
-      type: "page", id: 1, title: 'Spicy Ahi Poke Salad', 
+      type: "page", id: 1, title: 'hy_Spicy Ahi Poke Salad', 
       link: 'https://www.allrecipes.com/recipe/256937/spicy-ahi-poke-salad/', 
-      summary: "Explore Allrecipes Allrecipes Allrecipes Find a Recipe Explore The Foolproof Way to Cook Bacon in the Microwave \
+      summary: "hy_Explore Allrecipes Allrecipes Allrecipes Find a Recipe Explore The Foolproof Way to Cook Bacon in the Microwave \
       The Foolproof Way to Cook Bacon in the Microwave",
       summaryImage: "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F8159186.jpg&q=85",
       createdTime: new Date('2021-09-03'),
