@@ -5,6 +5,7 @@ function jsonDateReviver(key, value) {
   return value;
 }
 
+/* used to fetch data from the backend */
 export default async function graphQLFetch(query, variables = {}) {
   try {
     const response = await fetch('http://localhost:5000/graphql', {
