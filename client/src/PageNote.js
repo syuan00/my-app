@@ -216,7 +216,6 @@ export default class IssueEdit extends React.Component {
                       </Col>
                     </FormGroup>
                   </Form>
-                
                   <Toast
                     showing={toastVisible}
                     onDismiss={this.dismissToast}

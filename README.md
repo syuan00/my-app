@@ -27,15 +27,14 @@
     - Contents
         - Homelogic
             - ModalCollection
-            - PageHead -> IssueAddNavItem [TODO: 待修改，可以加入title、link、summary、tags]
+            - PageHead -> IssueAddNavItem
             - SideBar
-            - MainContent -> IssuePanel -> IssueOperators [TODO：增加功能1：编辑title、link、summary、tags；增加功能2: Delete；可能可以参考09.03，09.06，10.13节]
-        - PageNote [TODO: 用html的隐藏实现三种阅读编辑模式切换]
+            - MainContent -> IssuePanel -> IssueOperators
+        - PageNote
             - TextInput
             - Toast
-        - IssueReport [可以删除，先放着]
     - Footer
-TODO：Google Login、Performance、Report
+TODO：Performance、Report
 
 \* 除了IssueList以及其所调用的代码\*\*，其他代码都已仿照教材11章末时的代码。
 
@@ -95,15 +94,9 @@ Cancel changes
     - Press Ctrl+a followed by d to return to terminal
 
 - run the program [in "server" folder]
-    Homelogic的界面
     ```
-    npm run dev-client
+    npm run dev
     ```
-    Home是表格，edit能用的界面
-    ```
-    npm run dev-cli
-    ```
-    这两者后端代码是一样的。
 
 ## Port Allocation
 
