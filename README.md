@@ -86,7 +86,7 @@ Cancel changes
 
 - then add another link. The following is its info.
     ```
-    link: https://www.allrecipes.com/recipe/256937/spicy-ahi-poke-salad/
+    link: https://tworedbowls.com/2013/06/17/spicy-ahi-poke/
     title: hy_Spicy Ahi Poke Salad
     summary: hy_Explore Allrecipes Allrecipes Allrecipes Find a Recipe Explore The Foolproof Way to Cook Bacon in the Microwave The Foolproof Way to Cook Bacon in the Microwave
     ```
