@@ -115,23 +115,52 @@ class ModalCollection extends React.Component{
   }
 }
 
+function Login(props){
+  const [user, setUser] = useState();
+  const responseGoogle = (response) => {
+    console.log(response)
+    setUser(response.googleId)
+    const curuser = response.googleId
+    props.getMsg(curuser)
+  }
+  const logout = () => {
+    console.log("logged out!!!!")
+    setUser("")
+    props.getMsg("")
+  }
+  return (
+    <>
+      <GoogleLogin
+      clientId="766323342011-sji3911u7g14ev4hj9hj6emdlgac5pvi.apps.googleusercontent.com"
+      buttonText="Login"
+      style = {{border : 'none', outline :'none'}}
+      onSuccess={responseGoogle}
+      onFailure={responseGoogle}
+    />
+    <GoogleLogout
+        clientId="766323342011-sji3911u7g14ev4hj9hj6emdlgac5pvi.apps.googleusercontent.com"
+        buttonText="Logout"
+        onLogoutSuccess={logout}
+      >
+      </GoogleLogout>
+    </>
+  )
+}
 /**
  * @author Hu Yue
  * @description define the page head for the homepage, including the app_icon, the search_bar, 3 button at the right side for login, signup and addlink
  */
-function PageHead (props){
-    const [user, setUser] = useState();
-    const responseGoogle = (response) => {
-      console.log(response)
-      setUser(response.googleId)
-      const curuser = response.googleId
-      props.setCurUser(curuser)
+class PageHead extends React.Component{
+    constructor(props){
+      super(props)
+      this.handleGetMsg = this.handleGetMsg.bind(this)
+
     }
-    const logout = () => {
-      console.log("logged out!!!!")
-      setUser("")
-      props.setCurUser("")
+    handleGetMsg = (value) => {
+      console.log(value)
+      this.props.setCurUser(value)
     }
+    render(){
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
         <div className="container-fluid">
@@ -141,24 +170,13 @@ function PageHead (props){
 
           <ul className="nav navbar-nav navbar-right">
             <li><a className = "btn btn-link" href = '#' role = "button"  data-toggle = "modal" data-target = "#myAddLinkModal"><span className="glyphicon glyphicon-link"></span> Add Link</a></li>
-            <GoogleLogin
-              clientId="766323342011-sji3911u7g14ev4hj9hj6emdlgac5pvi.apps.googleusercontent.com"
-              buttonText="Login"
-              style = {{border : 'none', outline :'none'}}
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-            />
-            <GoogleLogout
-                clientId="766323342011-sji3911u7g14ev4hj9hj6emdlgac5pvi.apps.googleusercontent.com"
-                buttonText="Logout"
-                onLogoutSuccess={logout}
-              >
-              </GoogleLogout>
+            <Login getMsg ={this.handleGetMsg}/>
           </ul>
 
         </div>
       </nav>
     )
+            }
   
 }
 
@@ -269,7 +287,7 @@ export default class Homelogic extends React.Component{
 
  constructor(){
    super()
-   this.state = {issues: [], category : "home", user_id:""}
+   this.state = {issues: [], category : "home", user_id:"",isLoggoutTriggered:false}
    this.addNewLink = this.addNewLink.bind(this)
    this.setCurUser = this.setCurUser.bind(this)
    this.setCategory = this.setCategory.bind(this)
@@ -326,11 +344,13 @@ export default class Homelogic extends React.Component{
  async setCurUser(curUser){
    
    this.setState({user_id:curUser})
+   if(curUser.length == 0) this.setState({isLoggoutTriggered:true})
    const issue = {
      category: this.state.category,
-     user_id: curUser
+     user_id: curUser,
+     isLoggoutTriggered:this.state.isLoggoutTriggered
    }
-   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1"+this.state.user_id)
+   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1"+this.state.isLoggoutTriggered)
    this.loadData(issue)
  }
 

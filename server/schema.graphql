@@ -23,6 +23,7 @@ type Issue {
   snapshot: String
   noteText: String
   lastModifiedTime: String
+  isLoggoutTriggered: Boolean
 }
 
 "Toned down Issue, used as inputs, without server generated values."
@@ -30,6 +31,7 @@ input IssueInputs {
   user_id: String
   link: String
   category: CategoryType = home
+  isLoggoutTriggered: Boolean
 }
 
 """Inputs for issueUpdate: all are optional. Whichever is specified will

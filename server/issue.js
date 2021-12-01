@@ -1,7 +1,7 @@
 const { UserInputError } = require('apollo-server-express');
 const { getDb, getNextSequence } = require('./db.js');
 
-
+let lastUser = ""
 /**
  * @author Hu Xuan
  * @description get an issue by id
@@ -17,20 +17,32 @@ const { getDb, getNextSequence } = require('./db.js');
  * @description query support: get the issueList
  */
 async function getListValidation(issue){
+    userId = await userStatusKeep(issue);
     const errors = [];
-    if(issue.user_id == null || issue.user_id.length == 0){
+    if(userId == null || userId.length == 0){
         errors.push("Please login First!")
     }
     if (errors.length > 0) {
         throw new UserInputError('Invalid input(s)', { errors });
     }
+    return userId;
 }
-  
+
+async function userStatusKeep(issue){
+  var userId = issue.user_id
+  if(userId.length == 0 && issue.isLoggoutTriggered)
+    userId = "";
+  else{
+    userId = lastUser.length == 0 ? userId : lastUser;
+  }
+  lastUser = userId;
+  return userId;
+}
 async function list(_,{issue}) {
     // await getListValidation(issue)
     const db = getDb();
     const category = issue.category
-    const userId = issue.user_id
+    userId = await userStatusKeep(issue);
     const issues = await db.collection('issues').find({user_id:userId, category:category}).toArray();
     return issues;
 }
@@ -44,7 +56,7 @@ async function list(_,{issue}) {
     const db = getDb();
     const curLink = issue.link.replace(/^\s+|\s+$/gm, '');
     issue.link = curLink;
-    const existed = await db.collection('issues').findOne({link:curLink});
+    const existed = await db.collection('issues').findOne({user_id:issue.user_id, link:curLink});
     const errors = [];
     // check if added before
     if(curLink.length == 0){
@@ -65,9 +77,10 @@ async function list(_,{issue}) {
  */
 async function add(_, { issue }) {
     const db = getDb();
-    await getListValidation(issue);
+    issue.user_id = await getListValidation(issue);
     await issueAddValidate(issue);
     issue.createdTime = new Date();
+    issue.user_id = userId;
     issue.id = await db.collection('issues').count()+1;
     issue.category = "home"
     //placeholder

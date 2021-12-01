@@ -17,7 +17,8 @@
     "express": "^4.16.4",
     "graphql": "^0.13.2",
     "mongodb": "^3.1.10",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "react-cookies": "^0.1.1"
   },
   "devDependencies": {
     "concurrently": "^4.0.1"
