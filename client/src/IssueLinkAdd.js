@@ -52,7 +52,7 @@ class IssueLinkAdd extends React.Component {
       link: document.getElementById("link").innerText,
       title: document.getElementById("title").innerText,
       summary: document.getElementById("summary").innerText,
-      noteText: document.getElementById("note").innerText,
+      noteText: null,
     };
     
     const query = `mutation issueAdd($issue: IssueInputs!) {
@@ -100,9 +100,9 @@ class IssueLinkAdd extends React.Component {
                 <label for="summary"><b>summary</b></label>
                 <div id = "summary" contentEditable="true"  type="summary" placeholder="Enter summary" name="summary"> </div>
               
-                <label for="title"><b>note</b></label>
+                {/* <label for="title"><b>note</b></label>
                 <div id = "note" contentEditable="true"  type="myinput" placeholder="Enter title" name="note"></div>
-                <br/>
+                <br/> */}
 
               </FormGroup>
             </Form>
