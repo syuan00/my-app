@@ -11,7 +11,16 @@ let lastUser = ""
     const issue = await db.collection('issues').findOne({ id });
     return issue;
 }
+async function issueEditIntro(_,{issue}){
+  const db = getDb();
+  const curLink = issue.link;
+  const curSummary = issue.summary;
+  const curTitle = issue.title
+  const newIssue = await db.collection('issues').updateOne({link:curLink},{$set:{summary:curSummary, title:curTitle}});
+  const savedIssue = await db.collection('issues').findOne({link:curLink});
+  return savedIssue
 
+}
 /**
  * @author Hu Yue
  * @description query support: get the issueList
@@ -204,6 +213,7 @@ module.exports = {
     changeCategory,
     get,
     update,
+    issueEditIntro,
     delete: remove,
     clearAll,
 };

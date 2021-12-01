@@ -30,6 +30,8 @@ type Issue {
 input IssueInputs {
   user_id: String
   link: String
+  summary:String
+  title:String
   category: CategoryType = home
   isLoggoutTriggered: Boolean
 }
@@ -52,6 +54,7 @@ type Mutation {
   issueAdd(issue: IssueInputs!): Issue!
   issueChangeCategory(issue: IssueInputs!):Issue!
   issueUpdate(id: Int!, changes: IssueUpdateInputs!): Issue!
+  issueEditIntro(issue: IssueInputs!) : Issue!
   issueDelete(issue: IssueInputs!): Issue
   issueClearAll(issue: IssueInputs!): Issue
 }

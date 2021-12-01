@@ -17,6 +17,7 @@ const issue = require('./issue.js');
     issueAdd: issue.add,
     issueChangeCategory: issue.changeCategory,
     issueUpdate: issue.update,
+    issueEditIntro: issue.issueEditIntro,
     issueDelete: issue.delete,
     issueClearAll: issue.clearAll,
   },

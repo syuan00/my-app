@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink, withRouter } from 'react-router-dom';
-
+import IssueAddNavItem from './IssueAddNavItem.js';
 const IssueOperators = withRouter(({ issue, location: { search } }) => {
     const selectLocation = { pathname: `/issues/${issue.id}`, search };
     return (  
@@ -74,7 +74,7 @@ export default class IssuePanel extends React.Component {
                 <h3 class="panel-title">
                   <a href={issue.link}><span className="glyphicon glyphicon-link"></span></a>
                   {issue.title}
-                  <a className = "btn btn-link" href = '#' role = "button" data-toggle="modal" data-target="#myEditModal"  style={{ marginLeft: "1em" }}>  <span class="glyphicon glyphicon-pencil"></span> </a>
+                  <IssueAddNavItem link = {issue.link} summary = {issue.summary} title = {issue.title} id = {issue.id}/>
                   <IssueOperators key={issue.id} issue={issue} />
                 </h3>
               </div>
@@ -109,35 +109,8 @@ export default class IssuePanel extends React.Component {
           <br />
   
   
-          <div class="modal fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" 
-                        aria-hidden="true">×
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">
-                      Edit bookmark
-                    </h4>
-                  </div>
-                  <div class="modal-body">
-                        <label for="title"><b>title</b></label>
-                        <div contentEditable="true"  type="myinput" placeholder="Enter title" name="title">{issue.title}</div>
-                        <br/>
-                        <label for="link"><b>link</b></label>
-                        <div contentEditable="true"  type="myinput" placeholder="Enter link" name="link" required >{issue.link} </div>
-                        <br/>
-                        <label for="summary"><b>summary</b></label>
-                        <div contentEditable="true"  type="summary" placeholder="Enter summary" name="summary" required> {issue.summary}</div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
-                      Save Changes
-                    </button>
-                  </div>
-                </div> 
-              </div> 
-            </div> 
+           
+    
         </div>
       )
     }
