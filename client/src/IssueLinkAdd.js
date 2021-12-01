@@ -89,7 +89,7 @@ class IssueLinkAdd extends React.Component {
           <Modal.Body>
             <Form name="issueAdd">
               <FormGroup>
-                <label for="title"><b>link</b></label>
+                <label for="link"><b>link</b></label>
                 <div id = "link" contentEditable="true"  type="myinput" placeholder="Enter link" name="link"></div>
                 <br/>
 

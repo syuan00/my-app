@@ -74,15 +74,9 @@ class IssueAddNavItem extends React.Component {
     const { toastVisible, toastMessage, toastType } = this.state;
     return (
       <React.Fragment>
-        <NavItem onClick={this.showModal}>
-          <OverlayTrigger
-            // placement="left"
-            delayShow={1000}
-            overlay={<Tooltip id="create-issue">Create Issue</Tooltip>}
-          >
-            <span class="glyphicon glyphicon-pencil"></span> 
-          </OverlayTrigger>
-        </NavItem>
+        <a href="javascript:void(0)" class="w3-bar-item w3-button" style={{background:"transparent"}} onClick = {this.showModal}>
+          <span class="glyphicon glyphicon-pencil"></span> 
+        </a>
         <Modal keyboard show={showing} onHide={this.hideModal}>
           <Modal.Header closeButton>
             <Modal.Title>Please edit your introduction</Modal.Title>

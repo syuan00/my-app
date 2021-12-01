@@ -1,14 +1,14 @@
 import React from "react";
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import IssueAddNavItem from './IssueAddNavItem.js';
-const IssueOperators = withRouter(({ issue, location: { search } }) => {
-    const selectLocation = { pathname: `/issues/${issue.id}`, search };
-    return (  
-        <div>
-            <Link to={`/page-note/${issue.id}`} style = {{marginRight:"0"}}>Open</Link>
-        </div>
-    );
-  });
+// const IssueOperators = withRouter(({ issue }) => {
+//     // const selectLocation = { pathname: `/issues/${issue.id}`, search };
+//     return (  
+//         <div>
+//             <Link to={`/page-note/${issue.id}`} style = {{marginRight:"0"}}>Open</Link>
+//         </div>
+//     );
+//   });
 
 export default class IssuePanel extends React.Component {
     constructor(){
@@ -74,14 +74,15 @@ export default class IssuePanel extends React.Component {
          
           <div class="col-xs-12 col-sm-5">
             <div class="panel panel-default">
-  
               <div class="panel-heading">
-                <h3 class="panel-title">
-                  <a href={issue.link}><span className="glyphicon glyphicon-link"></span></a>
-                  {issue.title}
+                <div style={{float:"right"}}>
                   <IssueAddNavItem link = {issue.link} summary = {issue.summary} title = {issue.title} id = {issue.id} category = {issue.category} keepInCurCategory = {this.props.keepInCurCategory} user_id = {issue.user_id}/>
-                  <IssueOperators key={issue.id} issue={issue} />
-                </h3>
+                  <Link to={`/page-note/${issue.id}`} style = {{height:"5px"}}>Open</Link>
+                </div>
+                <h2 class="panel-title">
+                  <a href={issue.link}><span className="glyphicon glyphicon-link"></span></a> 
+                  <b>{issue.title}</b>
+                </h2>
               </div>
   
               <div class="panel-body">

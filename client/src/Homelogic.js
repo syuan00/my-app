@@ -74,7 +74,7 @@ class PageHead extends React.Component{
           </div>
 
           <ul className="nav navbar-nav navbar-right">
-            <IssueLinkAdd  user_id = {this.state.user}/>
+            <IssueLinkAdd user_id = {this.state.user}/>
             <Login getMsg ={this.handleGetMsg}/>
           </ul>
 
@@ -263,7 +263,6 @@ export default class Homelogic extends React.Component{
      user_id: curUser,
      isLoggoutTriggered:this.state.isLoggoutTriggered
    }
-   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1"+this.state.isLoggoutTriggered)
    this.loadData(issue)
  }
 
@@ -282,7 +281,6 @@ export default class Homelogic extends React.Component{
  }
 
  async deleteOnePage(issue){
-  //  issue.user_id = this.state.user_id;
    const query = `mutation issueDelete($issue: IssueInputs!) {
     issueDelete(issue: $issue) {
       id
