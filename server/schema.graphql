@@ -28,6 +28,8 @@ type Issue {
 
 "Toned down Issue, used as inputs, without server generated values."
 input IssueInputs {
+  id: Int
+  noteText:String
   user_id: String
   link: String
   summary:String

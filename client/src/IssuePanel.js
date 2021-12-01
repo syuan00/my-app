@@ -19,8 +19,13 @@ export default class IssuePanel extends React.Component {
       this.handleMark = this.handleMark.bind(this)
       this.handleRead = this.handleRead.bind(this)
       this.handleFolder = this.handleFolder.bind(this)
+      this.handleDelete = this.handleDelete.bind(this)
     }
-    
+    handleDelete(e){
+      e.preventDefault()
+      const issue = this.props.issue;
+      this.props.deleteOnePage(issue);
+    }
     handleHome(e){
       e.preventDefault();
       const issue = this.props.issue;
@@ -89,7 +94,7 @@ export default class IssuePanel extends React.Component {
                   <button class = 'btn' onClick = {this.handleMark}><span className="glyphicon glyphicon-bookmark"></span></button>
                   <button class = 'btn' onClick = {this.handleRead}><span className="glyphicon glyphicon-eye-open"></span></button>
                   <button class = 'btn' onClick = {this.handleFolder}><span className="glyphicon glyphicon-folder-open"></span></button>
-                  
+                  <button class = 'btn' onClick = {this.handleDelete}><span className="glyphicon glyphicon-trash"></span></button>                  
                 </div>
             </div>
   

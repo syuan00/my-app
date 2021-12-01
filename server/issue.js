@@ -1,7 +1,8 @@
 const { UserInputError } = require('apollo-server-express');
 const { getDb, getNextSequence } = require('./db.js');
 
-let lastUser = ""
+let lastUser = "";
+let deletedId = -1;
 /**
  * @author Hu Xuan
  * @description get an issue by id
@@ -154,20 +155,13 @@ function validate(issue) {
  */
  async function issueDeleteValidate(issue){
     const db = getDb();
-    const curName = issue.name.replace(/(^\s*)|(\s*$)/g, "").replace(/\s+/g, ' ');
-    const curPhone = issue.phone.replace(/(^\s*)|(\s*$)/g, "");
-    issue.name = curName;
-    issue.phone = curPhone;
-    const existed = await db.collection('issues').findOne({name: curName, phone: curPhone});
+    const curLink = issue.link;
+    const existed = await db.collection('issues').findOne({link:curLink});
     const errors = [];
   
-    if(curName.length == 0 || curPhone.length == 0){
-      errors.push("Please enter your full information!")
+   if(existed === null){
+      errors.push("Sorry, we cannot find your page stored, please check again.")
     }
-    else if(existed === null){
-      errors.push("Sorry, we cannot find your order, please check again.")
-    }
-  
   
     if(existed !== null){
       deletedId = existed.id;
@@ -183,10 +177,12 @@ function validate(issue) {
  */
 async function remove(_,{issue}){    
     const db = getDb();
+    const oriIssue = issue;
     await issueDeleteValidate(issue);
     let res = await db.collection('issues').removeOne({id:deletedId});
     await updateIDForDelete(deletedId);
-    return res;
+    
+    return oriIssue;
 }
   
 /**

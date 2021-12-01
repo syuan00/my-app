@@ -267,7 +267,7 @@ class SideBar extends React.Component {
  * @description define the main content of the homepage, including the 
  */
  function MainContent(props){
-  const IssuePanels = props.issues.map(issue =>  <IssuePanel key={issue.id} issue={issue} changeCategoryOfOnePage = {props.changeCategoryOfOnePage}/>)
+  const IssuePanels = props.issues.map(issue =>  <IssuePanel key={issue.id} issue={issue} changeCategoryOfOnePage = {props.changeCategoryOfOnePage} deleteOnePage = {props.deleteOnePage}/>)
   return (
     <div>
       <div style={{ marginLeft: "18%" ,marginTop:"75px"}}>
@@ -291,6 +291,7 @@ export default class Homelogic extends React.Component{
    this.addNewLink = this.addNewLink.bind(this)
    this.setCurUser = this.setCurUser.bind(this)
    this.setCategory = this.setCategory.bind(this)
+   this.deleteOnePage = this.deleteOnePage.bind(this)
    this.changeCategoryOfOnePage = this.changeCategoryOfOnePage.bind(this)
  }
 
@@ -368,13 +369,27 @@ export default class Homelogic extends React.Component{
    }
  }
 
+ async deleteOnePage(issue){
+  //  issue.user_id = this.state.user_id;
+   const query = `mutation issueDelete($issue: IssueInputs!) {
+    issueDelete(issue: $issue) {
+      id
+    }
+  }`;
+  const data = await graphQLFetch(query, {issue});
+  if (data) {
+    this.loadData(issue);
+  }
+
+ }
+
  render(){
    return (
      <div>
        <ModalCollection addNewLink = {this.addNewLink}/>
        <PageHead setCurUser = {this.setCurUser}/>
        <SideBar setCategory = {this.setCategory}/>
-       <MainContent issues = {this.state.issues} changeCategoryOfOnePage = {this.changeCategoryOfOnePage}/>
+       <MainContent issues = {this.state.issues} changeCategoryOfOnePage = {this.changeCategoryOfOnePage} deleteOnePage = {this.deleteOnePage}/>
      </div> 
    );
  }
