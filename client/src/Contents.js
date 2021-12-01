@@ -10,8 +10,8 @@ const NotFound = () => <h1>Page Not Found</h1>;
 export default function Contents() {
   return (
     <Switch>
-      <Redirect exact from="/" to="/issues" />
-      <Route path="/issues" component={Homelogic} />
+      <Redirect exact from="/" to="/home" />
+      <Route path="/home" component={Homelogic} />
       <Route path="/page-note/:id" component={PageNote} />
       {/* <Route path="/report" component={IssueReport} /> */}
       <Route component={NotFound} />

@@ -5,7 +5,9 @@ import {
   Col, Panel, Form, FormGroup, FormControl, ControlLabel,
   ButtonToolbar, Button, Alert
 } from 'react-bootstrap';
-
+import {
+  NavItem, Glyphicon
+} from 'react-bootstrap';
 
 import graphQLFetch from './graphQLFetch.js';
 import TextInput from './TextInput.js';
@@ -21,7 +23,8 @@ export default class IssueEdit extends React.Component {
       toastVisible: false,
       toastMessage: '',
       toastType: 'success',
-      displayPage: 'none',
+      displayPage: true,
+      displayNote: true,
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,7 +34,8 @@ export default class IssueEdit extends React.Component {
     this.showSuccess = this.showSuccess.bind(this);
     this.showError = this.showError.bind(this);
     this.dismissToast = this.dismissToast.bind(this);
-    this.setDisplay = this.setDisplay.bind(this);
+    this.setDisplayPage = this.setDisplayPage.bind(this);
+    this.setDisplayNote = this.setDisplayNote.bind(this);
   }
 
   componentDidMount() {
@@ -46,18 +50,12 @@ export default class IssueEdit extends React.Component {
     }
   }
 
-  setDisplay() { //编辑按钮的单击事件，修改状态机displayPage的取值
-    if (this.state.displayPage == 'none') {
-        this.setState({
-            displayPage: 'block',
-        })
-    }
-    else if (this.state.displayPage == 'block') {
-        this.setState({
-            displayPage: 'none',
-        })
+  setDisplayPage = () => { //编辑按钮的单击事件，修改状态机displayPage的取值
+    this.setState({ displayPage: !this.state.displayPage });
+  }
 
-    }
+  setDisplayNote = () => { //编辑按钮的单击事件，修改状态机displayNote的取值
+    this.setState({ displayNote: !this.state.displayNote });
   }
 
   onChange(event, naturalValue) {
@@ -95,7 +93,7 @@ export default class IssueEdit extends React.Component {
       }
     }`;
 
-    const { id, user_id, type, title, link, summary, summaryImage, createdTime, category, folder, tags, text, snapshot, lastMotifiedTime, ...changes } = issue;
+    const { id, user_id, type, title, link, summary, summaryImage, createdTime, category, folder, tags, text, snapshot, lastModifiedTime, ...changes } = issue;
     const data = await graphQLFetch(query, { changes, id }, this.showError);
     if (data) {
       this.setState({ issue: data.issueUpdate });
@@ -175,7 +173,11 @@ export default class IssueEdit extends React.Component {
               <a className="navbar-brand" style={{ color: "black" }}><b>PageBox</b></a>
             </div>
             <ul className="nav navbar-nav navbar-right">
-              {/* <li><a className = "btn btn-link" href = '#' role = "button"  data-toggle = "modal" data-target = "#myAddLinkModal"><span className="glyphicon glyphicon-link"></span> Add Link</a></li>*/}
+              <NavItem onClick={this.setDisplayPage}><span className="glyphicon glyphicon-file" style={this.state.displayPage?{color:"#000000"}:{color:"#b3b3b3"}}></span></NavItem>
+              <NavItem onClick={this.setDisplayNote}><span className="glyphicon glyphicon-edit" style={this.state.displayNote?{color:"#000000"}:{color:"#b3b3b3"}}></span></NavItem>
+              <LinkContainer to="/home">
+                <Button bsStyle="link">Back</Button>
+              </LinkContainer>
             </ul>
           </div>
         </nav>
@@ -184,51 +186,80 @@ export default class IssueEdit extends React.Component {
             <p>{link}</p>
             <p>created: {createdTime}</p>
             <p>{category}{tags ? ` · ${tags.map(x => '#' + x).join(' ')}` : ''}</p>
-            {/* 通过icon实现编辑图标 */}
-            <div style={{ background: '#fff', paddingTop: '10px' }}>
-              <Button onClick={this.setDisplay}>显示Page</Button>
-            </div>
-            <div display={this.state.displayPage}>1</div>
-            <Form horizontal onSubmit={this.handleSubmit}>
-              <FormGroup>
+            {this.state.displayPage ? 
+              (this.state.displayNote ?  
+                <div id="page-note">
+                  <Form horizontal onSubmit={this.handleSubmit}>
+                    <FormGroup>
+                      <Col sm={6}>
+                        <iframe loading="lazy" src={link} style={{border:"0px #ffffff none"}} scrolling="yes" frameborder="1" marginheight="0px" marginwidth="0px" height="640px" width="100%" allowfullscreen></iframe>
+                      </Col>
+                      <Col sm={6}>
+                        <p>Last modified time: {lastModifiedTime ? lastModifiedTime.toDateString() : (new Date()).toDateString()}</p>
+                        <FormControl
+                          componentClass={TextInput}
+                          tag="textarea"
+                          rows={30}
+                          cols={50}
+                          name="noteText"
+                          value={noteText}
+                          onChange={this.onChange}
+                          key={id}
+                        />
+                      </Col>
+                    </FormGroup>
+                    <FormGroup>
+                      <Col smOffset={10} sm={6}>
+                        <ButtonToolbar>
+                          <Button bsStyle="primary" type="submit">Submit</Button>
+                        </ButtonToolbar>
+                      </Col>
+                    </FormGroup>
+                  </Form>
                 
-                <Col sm={6}>
-                  <iframe loading="lazy" src={link} style={{border:"0px #ffffff none"}} scrolling="yes" frameborder="1" marginheight="0px" marginwidth="0px" height="640px" width="100%" allowfullscreen></iframe>
-                </Col>
-                
-                <Col sm={6}>
-                  <p>Last modified time: {lastModifiedTime ? lastModifiedTime.toDateString() : (new Date()).toDateString()}</p>
-                  <FormControl
-                    componentClass={TextInput}
-                    tag="textarea"
-                    rows={30}
-                    cols={50}
-                    name="noteText"
-                    value={noteText}
-                    onChange={this.onChange}
-                    key={id}
-                  />
-                </Col>
-              </FormGroup>
-              <FormGroup>
-                <Col smOffset={10} sm={6}>
-                  <ButtonToolbar>
-                    <Button bsStyle="primary" type="submit">Submit</Button>
-                    <LinkContainer to="/issues">
-                      <Button bsStyle="link">Back</Button>
-                    </LinkContainer>
-                  </ButtonToolbar>
-                </Col>
-              </FormGroup>
-            </Form>
-          
-          <Toast
-            showing={toastVisible}
-            onDismiss={this.dismissToast}
-            bsStyle={toastType}
-          >
-            {toastMessage}
-          </Toast>
+                  <Toast
+                    showing={toastVisible}
+                    onDismiss={this.dismissToast}
+                    bsStyle={toastType}
+                  >
+                    {toastMessage}
+                  </Toast>
+                </div>
+              : 
+                <div id="page">
+                  <Form horizontal>
+                    <FormGroup>
+                      <Col sm={12}>
+                        <iframe loading="lazy" src={link} style={{border:"0px #ffffff none"}} scrolling="yes" frameborder="1" marginheight="0px" marginwidth="0px" height="640px" width="100%" allowfullscreen></iframe>
+                      </Col> 
+                    </FormGroup>
+                  </Form>
+                </div>
+              ):(this.state.displayNote ? 
+                <div id="note-readonly">
+                  <Form horizontal>
+                    <FormGroup>
+                      <Col sm={12}>
+                        <p>Last modified time: {lastModifiedTime ? lastModifiedTime.toDateString() : (new Date()).toDateString()}</p>
+                        <FormControl
+                          componentClass={TextInput}
+                          tag="textarea"
+                          rows={30}
+                          cols={50}
+                          name="noteText"
+                          value={noteText}
+                          onChange={this.onChange}
+                          key={id}
+                          readonly="readonly"
+                        />
+                      </Col>
+                    </FormGroup>
+                  </Form>
+                </div> 
+              : 
+                <div></div> 
+              )
+            }
         </div>
       </div>
     );
