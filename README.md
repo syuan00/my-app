@@ -1,47 +1,4 @@
 # PageBox IT5007 Final Proj
-
-## 进度汇报
-
-- hy
-    - 11.25 17：00 目前只做了前后端分离，后端的内容和graphql以及数据库初始化都还没写，里面由内容都是从tut5移植过来的，可进行修改
-
-    - 11.26 00：06 
-        - 添加了addlink的功能，目前只是添加url到后端,添加以后home可以显示新增的内容，后端通过graphql可以查询到信息。但是显示在home部分关于该页面的title summary等内容可能需要进行页面抓取，这部分没做，当前用占位符代替
-        - 初始化了schema.graphql。定义了一些数据结构和功能
-        - App.js获取initialEntries已经修改成从后端获取，运行之前记得运行数据库初始化代码，来加载初始数据
-            - To hx： initialEntries 接口仍然放在代码中了，发现你写的一部分内容是直接获取的initialEntries[i]，可能需要你改一下你引用该部分的代码
-        - 添加了部分注释，简略
-    
-    - 11.28 凌晨
-        - init.mongo.js改为4条，新增2条我的user_id
-        - 后端代码拆开
-        - 修改了schema.graphql、issue.js
-
-    - 11.29 03:00
-        - 以教材11章末时的代码为模板，模块化前端代码
-        - Google登陆：user_id是Page的state，作为props传给调用的函数；同时Page中定义了setCurUser函数用于setState，其作为参数传给NavBar，NavBar相应谷歌登录时可以调用该函数改变use_id的值
-        - 实现Edit界面
-
-## Component Hierachy
-- index.js -> App.js -> Page.js
-    - Contents
-        - Homelogic
-            - ModalCollection
-            - PageHead -> IssueAddNavItem
-            - SideBar
-            - MainContent -> IssuePanel -> IssueOperators
-        - PageNote
-            - TextInput
-            - Toast
-    - Footer
-TODO：Performance、Report
-
-\* 除了IssueList以及其所调用的代码\*\*，其他代码都已仿照教材11章末时的代码。
-
-\*\* 指没有仔细检查，参考代码版本可能是9-11章之间的，因为跑不通时会退一下版本。
-
-\*\*\* 侧边栏可以参考IssueFilter，IssuePanel取代IssueTable，其中的按钮、链接可能可以参考IssueRow中的“Edit”和“Select”。
-
 ## Environment required :
 - mongodb [skip this if you have had mongodb installed]
 Cancel changes
@@ -59,6 +16,17 @@ Cancel changes
     ```
 
     - If mongod screen exits instantly, then you have a problem. Do the following: mkdir -p /data/db, redo the screen mongod and press Ctrl+a followed by d to return to terminal. You are ready to run mongo CLI using $mongo.
+## Attention
+
+- port 3000 and port 5000 are used, open them before you test
+
+- You must Login first before you addlink, otherwise you will get a warning
+
+- You must have the mongodb preinstalled
+
+- When you try with pagenote, you are recommended to use our sample input(show in the following), since we load a html in our page dynamically, some webpage will reject our request and you will not see the perfect result. You can try your own link, but not every one is successful.
+
+
 
 ## Commands for running  PageBox
 
@@ -67,14 +35,6 @@ Cancel changes
     ```
     cd client 
     npm install
-    ```
-
-- install dependencies for client[ in "cli" folder ]
-
-    ```
-    cd ../cli 
-    npm install
-    ln -s ../node_modules/bootstrap/dist public/bootstrap
     ```
 
 - install dependencies for server[in "server" folder]
@@ -108,5 +68,47 @@ Cancel changes
 
 - open `localhost:3000` in your browser and you can play with the app
 
+## Sample Input
 
+- we provide some samples for you to play with
+
+- You should login with your google account, otherwise you can not add new link.
+
+- press the "plus" button  at the right of the navigation bar and enter the first pageInfo as follow.
+
+    ```
+    link: https://getbootstrap.com/docs/4.0/components/buttons/
+    title: Buttons
+    summary: Use Bootstrap’s custom button styles for actions in forms, dialogs, and more with support for multiple sizes, states, and more.
+    ```
+
+- Press home at sidebar. You will the see the page has been added to the category "home"
+
+- then add another link. The following is its info.
+    ```
+    link: https://www.allrecipes.com/recipe/256937/spicy-ahi-poke-salad/
+    title: hy_Spicy Ahi Poke Salad
+    summary: hy_Explore Allrecipes Allrecipes Allrecipes Find a Recipe Explore The Foolproof Way to Cook Bacon in the Microwave The Foolproof Way to Cook Bacon in the Microwave
+    ```
+
+- If you want to change the summary and title you made before, click the pencil-like button of the panel and you can make your change
+
+- If you want to make some notes to the page you added, you can click the "open" link on the panel. for example, you can add the following note to the `hy_Spicy Ahi Poke Salad` page, click the "open", and on the right text input, paste the following: 
+
+    ```
+        Ingredient
+        1 pound ahi tuna, cut into 1/2-inch cubes
+        ¼ cup minced green onion
+        2 tablespoons ground roasted macadamia nuts
+        2 tablespoons chopped fresh cilantro, or more to taste
+        1 tablespoon fresh lime juice
+        2 teaspoons sesame oil, or more to taste
+        1 teaspoon minced fresh ginger
+        1 teaspoon red pepper flakes
+        1 teaspoon sriracha sauce, or to taste
+        
+        Steps
+        1. Combine tuna, green onion, macadamia nuts, cilantro, lime juice, sesame oil, ginger, red pepper flakes, and sriracha sauce in a bowl; 
+        2. Refrigerate for 2 hours.
+    ```
 
