@@ -10,7 +10,8 @@ import { LinkContainer } from 'react-router-bootstrap';
 import graphQLFetch from './graphQLFetch.js';
 import IssuePanel from './IssuePanel.js';
 import IssueLinkAdd from "./IssueLinkAdd.js";
-
+var prevUser = "";
+var preSavedCategory = "home"
 
 
 function Login(props){
@@ -19,12 +20,14 @@ function Login(props){
     console.log(response)
     setUser(response.googleId)
     const curuser = response.googleId
+    prevUser = curuser
     props.getMsg(curuser)
   }
   const logout = () => {
     console.log("logged out!!!!")
     setUser("")
     props.getMsg("")
+    prevUser = ""
   }
   return (
     <>
@@ -53,7 +56,7 @@ class PageHead extends React.Component{
       super(props)
       this.handleGetMsg = this.handleGetMsg.bind(this)
       // this.handleAddLink = this.handleAddLink.bind(this)
-      this.state = {user:""}
+      this.state = {user:prevUser}
     }
     handleGetMsg = (value) => {
       console.log(value)
@@ -168,7 +171,7 @@ class SideBar extends React.Component {
  * @description define the main content of the homepage, including the 
  */
  function MainContent(props){
-  const IssuePanels = props.issues.map(issue =>  <IssuePanel key={issue.id} issue={issue} changeCategoryOfOnePage = {props.changeCategoryOfOnePage} deleteOnePage = {props.deleteOnePage}/>)
+  const IssuePanels = props.issues.map(issue =>  <IssuePanel key={issue.id} issue={issue} changeCategoryOfOnePage = {props.changeCategoryOfOnePage} deleteOnePage = {props.deleteOnePage} keepInCurCategory = {props.keepInCurCategory}/>)
   return (
     <div>
       <div style={{ marginLeft: "18%" ,marginTop:"75px"}}>
@@ -188,11 +191,12 @@ export default class Homelogic extends React.Component{
 
  constructor(){
    super()
-   this.state = {issues: [], category : "home", user_id:"",isLoggoutTriggered:false}
+   this.state = {issues: [], category : preSavedCategory, user_id:"",isLoggoutTriggered:false}
    this.setCurUser = this.setCurUser.bind(this)
    this.setCategory = this.setCategory.bind(this)
    this.deleteOnePage = this.deleteOnePage.bind(this)
    this.changeCategoryOfOnePage = this.changeCategoryOfOnePage.bind(this)
+   this.keepInCurCategory = this.keepInCurCategory.bind(this)
  }
 
  componentDidMount(){
@@ -203,16 +207,35 @@ export default class Homelogic extends React.Component{
    this.loadData(issue);
  }
 
+ async keepInCurCategory(issue){
+   console.log("cur userid from state:" + this.state.user_id);
+   console.log("cur userid from issue:" + issue.user_id)
+   console.log("original status from state:" + this.state.category);
+   console.log("excepted category from curpage:" + issue.category);
+  //  if(this.state.category != issue.category){
+    this.setState({category:issue.category, user_id:issue.user_id})
+    const newIssue = {
+      user_id: issue.user_id,
+      category : issue.category
+    }
+    console.log(newIssue);
+    console.log("cur userifd from state:" + this.state.user_id);
+    this.loadData(newIssue)
+
+ }
  async loadData(issue) {
-   
+   console.log("from load data : " + issue.user_id)
+   console.log("from load data category:" + issue.category);
    const query = `query($issue: IssueInputs!) {
      issueList(issue: $issue) {
-       user_id id title summary link noteText
+       user_id id title summary link noteText category
      }
    }`;
    const data = await graphQLFetch(query,{issue});
    if (data) {
      this.setState({ issues: data.issueList });
+     console.log("getrefreash page: userid" + this.state.user_id);
+     console.log("getrefreash page: category" + this.state.category);
    }
  
  }
@@ -221,6 +244,7 @@ export default class Homelogic extends React.Component{
  async setCategory(mycategory){
    console.log("clientf_origin:" + mycategory)
    this.setState({ category:mycategory });
+   preSavedCategory = mycategory;
    const issue = {
      category: mycategory,
      user_id: this.state.user_id
@@ -262,6 +286,8 @@ export default class Homelogic extends React.Component{
       id
     }
   }`;
+  console.log("delete issue.category:" + issue.category);
+  console.log("origianl category:" + this.state.category);
   const data = await graphQLFetch(query, {issue});
   if (data) {
     this.loadData(issue);
@@ -275,7 +301,7 @@ export default class Homelogic extends React.Component{
        
        <PageHead setCurUser = {this.setCurUser}/>
        <SideBar setCategory = {this.setCategory}/>
-       <MainContent issues = {this.state.issues} changeCategoryOfOnePage = {this.changeCategoryOfOnePage} deleteOnePage = {this.deleteOnePage}/>
+       <MainContent issues = {this.state.issues} changeCategoryOfOnePage = {this.changeCategoryOfOnePage} deleteOnePage = {this.deleteOnePage} keepInCurCategory = {this.keepInCurCategory}/>
      </div> 
    );
  }

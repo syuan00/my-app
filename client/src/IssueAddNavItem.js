@@ -49,7 +49,9 @@ class IssueAddNavItem extends React.Component {
     const issue = {
       title: document.getElementById("title").innerText,
       link: this.props.link,
-      summary: document.getElementById("summary").innerText
+      summary: document.getElementById("summary").innerText,
+      category: this.props.category,
+      user_id: this.props.user_id
     };
     
    
@@ -64,6 +66,7 @@ class IssueAddNavItem extends React.Component {
       const { history } = this.props;
       history.push(``);
     }
+    this.props.keepInCurCategory(issue);
   }
 
   render() {

@@ -12,6 +12,7 @@ const IssueOperators = withRouter(({ issue, location: { search } }) => {
 
 export default class IssuePanel extends React.Component {
     constructor(){
+      
       super()
       this.handleHome = this.handleHome.bind(this)
       this.handleMark = this.handleMark.bind(this)
@@ -66,6 +67,7 @@ export default class IssuePanel extends React.Component {
   
     render() {
       const issue = this.props.issue;
+      console.log("from main content-> issuepanel:" + issue.user_id)
       var displaymode = (issue.noteText == null || issue.noteText.length == 0) ? 'none' : 'block';
       return (
         <div class="row">
@@ -77,7 +79,7 @@ export default class IssuePanel extends React.Component {
                 <h3 class="panel-title">
                   <a href={issue.link}><span className="glyphicon glyphicon-link"></span></a>
                   {issue.title}
-                  <IssueAddNavItem link = {issue.link} summary = {issue.summary} title = {issue.title} id = {issue.id} category = {issue.category}/>
+                  <IssueAddNavItem link = {issue.link} summary = {issue.summary} title = {issue.title} id = {issue.id} category = {issue.category} keepInCurCategory = {this.props.keepInCurCategory} user_id = {issue.user_id}/>
                   <IssueOperators key={issue.id} issue={issue} />
                 </h3>
               </div>
