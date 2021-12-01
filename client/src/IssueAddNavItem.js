@@ -22,7 +22,7 @@ class IssueAddNavItem extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.showError = this.showError.bind(this);
     this.dismissToast = this.dismissToast.bind(this);
-    console.log(props.user_id);
+    // console.log(props.user_id);
   }
 
   showModal() {

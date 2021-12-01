@@ -59,7 +59,7 @@ class PageHead extends React.Component{
       this.state = {user:prevUser}
     }
     handleGetMsg = (value) => {
-      console.log(value)
+      // console.log(value)
       this.props.setCurUser(value)
       this.setState({user:value})
     }
@@ -210,24 +210,24 @@ export default class Homelogic extends React.Component{
 
 
  async keepInCurCategory(issue){
-   console.log("cur userid from state:" + this.state.user_id);
-   console.log("cur userid from issue:" + issue.user_id)
-   console.log("original status from state:" + this.state.category);
-   console.log("excepted category from curpage:" + issue.category);
+  //  console.log("cur userid from state:" + this.state.user_id);
+  //  console.log("cur userid from issue:" + issue.user_id)
+  //  console.log("original status from state:" + this.state.category);
+  //  console.log("excepted category from curpage:" + issue.category);
   //  if(this.state.category != issue.category){
     this.setState({category:issue.category, user_id:issue.user_id})
     const newIssue = {
       user_id: issue.user_id,
       category : issue.category
     }
-    console.log(newIssue);
-    console.log("cur userifd from state:" + this.state.user_id);
+    // console.log(newIssue);
+    // console.log("cur userifd from state:" + this.state.user_id);
     this.loadData(newIssue)
 
  }
  async loadData(issue) {
-   console.log("from load data : " + issue.user_id)
-   console.log("from load data category:" + issue.category);
+  //  console.log("from load data : " + issue.user_id)
+  //  console.log("from load data category:" + issue.category);
    const query = `query($issue: IssueInputs!) {
      issueList(issue: $issue) {
        user_id id title summary link noteText category
@@ -236,15 +236,15 @@ export default class Homelogic extends React.Component{
    const data = await graphQLFetch(query,{issue});
    if (data) {
      this.setState({ issues: data.issueList });
-     console.log("getrefreash page: userid" + this.state.user_id);
-     console.log("getrefreash page: category" + this.state.category);
+    //  console.log("getrefreash page: userid" + this.state.user_id);
+    //  console.log("getrefreash page: category" + this.state.category);
    }
  
  }
 
 
  async setCategory(mycategory){
-   console.log("clientf_origin:" + mycategory)
+  //  console.log("clientf_origin:" + mycategory)
    this.setState({ category:mycategory });
    preSavedCategory = mycategory;
    const issue = {
@@ -286,8 +286,8 @@ export default class Homelogic extends React.Component{
       id
     }
   }`;
-  console.log("delete issue.category:" + issue.category);
-  console.log("origianl category:" + this.state.category);
+  // console.log("delete issue.category:" + issue.category);
+  // console.log("origianl category:" + this.state.category);
   const data = await graphQLFetch(query, {issue});
   if (data) {
     this.loadData(issue);

@@ -67,7 +67,7 @@ export default class IssuePanel extends React.Component {
   
     render() {
       const issue = this.props.issue;
-      console.log("from main content-> issuepanel:" + issue.user_id)
+      // console.log("from main content-> issuepanel:" + issue.user_id)
       var displaymode = (issue.noteText == null || issue.noteText.length == 0) ? 'none' : 'block';
       return (
         <div class="row">

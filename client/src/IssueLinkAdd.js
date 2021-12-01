@@ -22,7 +22,7 @@ class IssueLinkAdd extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.showError = this.showError.bind(this);
     this.dismissToast = this.dismissToast.bind(this);
-    console.log("here at issuelinkadd:" + props.user_id);
+    // console.log("here at issuelinkadd:" + props.user_id);
   }
 
   showModal() {
