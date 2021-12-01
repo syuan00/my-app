@@ -63,6 +63,7 @@ class PageHead extends React.Component{
       this.props.setCurUser(value)
       this.setState({user:value})
     }
+  
    
     render(){
     return (
@@ -206,6 +207,7 @@ export default class Homelogic extends React.Component{
    }
    this.loadData(issue);
  }
+
 
  async keepInCurCategory(issue){
    console.log("cur userid from state:" + this.state.user_id);
