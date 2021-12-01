@@ -95,9 +95,6 @@ async function add(_, { issue }) {
     issue.category = "home"
     //placeholder
     issue.type = "Page_placeholder"
-    issue.title = "title_placeholder"
-    issue.summary = "summary_placeholder"
-    issue.noteText = "noteText_placeholder"
   
     const result = await db.collection('issues').insertOne(issue);
     const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });

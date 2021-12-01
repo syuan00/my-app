@@ -9,111 +9,9 @@ import { LinkContainer } from 'react-router-bootstrap';
 // import "./App.css";
 import graphQLFetch from './graphQLFetch.js';
 import IssuePanel from './IssuePanel.js';
+import IssueLinkAdd from "./IssueLinkAdd.js";
 
-/**
- * @author Hu Yue
- * @description all the modals used in homepage and some actions, including the login modal, the signup modal, the addLink modal
- */
-class ModalCollection extends React.Component{
-  constructor(){
-    super()
-    this.handleAddLink = this.handleAddLink.bind(this);
-  }
 
-  handleAddLink(e){
-    e.preventDefault();
-    const issue = {
-      link: document.querySelector(".url").value
-    }
-    this.props.addNewLink(issue);
-    document.querySelector(".url").value = ""
-  }
-  render(){
-    return(
-      <div>
-        <div class="modal fade" id="myLoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Login</h4>
-                </div>
-
-                <div class="modal-body">
-                  <label for="uname"><b>Username</b></label>
-                  <input type="text" placeholder="Enter Username" name="uname" required/>
-                  <br/>
-                  <label for="psw"><b>Password</b></label>
-                  <input type="password" placeholder="Enter Password" name="psw" required/>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-                    <button type="button" class="btn btn-primary">Login</button>
-                </div>
-            </div> 
-          </div> 
-          </div>
-
-          <div class="modal fade" id="mySignUpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Create Your Account</h4>
-                </div>
-
-                <div class="modal-body">
-                  <label for="uname"><b>Username</b></label>
-                  <input type="text" placeholder="Enter Username" name="uname" required/>
-                  <br/>
-                  <label for="psw"><b>Password</b></label>
-                  <input type="password" placeholder="Enter Password" name="psw" required/>
-                  <br/>
-                  <label for="psw"><b>Confirm your password</b></label>
-                  <input type="password" placeholder="Enter Password" name="psw"required/>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
-                    <button type="button" class="btn btn-primary">Confirm</button>
-                </div>
-            </div> 
-          </div> 
-          </div>
-
-          <div class="modal fade" id="myAddLinkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" 
-                      aria-hidden="true">×
-                  </button>
-                  <h4 class="modal-title" id="myModalLabel">
-                    Please add your link
-                  </h4>
-                </div>
-                <div class="modal-body">
-                        <b>URL  </b>
-                        <input type="url" placeholder="Enter URL" name="url" className="url" required/>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" 
-                      data-dismiss="modal">cancel
-                  </button>
-                  <button type="button" class="btn btn-primary" onClick={this.handleAddLink} data-dismiss="modal">
-                    confirm
-                  </button>
-                </div>
-              </div> 
-            </div> 
-          </div> 
-      </div>
-    )
-  }
-}
 
 function Login(props){
   const [user, setUser] = useState();
@@ -154,12 +52,15 @@ class PageHead extends React.Component{
     constructor(props){
       super(props)
       this.handleGetMsg = this.handleGetMsg.bind(this)
-
+      // this.handleAddLink = this.handleAddLink.bind(this)
+      this.state = {user:""}
     }
     handleGetMsg = (value) => {
       console.log(value)
       this.props.setCurUser(value)
+      this.setState({user:value})
     }
+   
     render(){
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
@@ -169,7 +70,7 @@ class PageHead extends React.Component{
           </div>
 
           <ul className="nav navbar-nav navbar-right">
-            <li><a className = "btn btn-link" href = '#' role = "button"  data-toggle = "modal" data-target = "#myAddLinkModal"><span className="glyphicon glyphicon-link"></span> Add Link</a></li>
+            <IssueLinkAdd  user_id = {this.state.user}/>
             <Login getMsg ={this.handleGetMsg}/>
           </ul>
 
@@ -288,7 +189,6 @@ export default class Homelogic extends React.Component{
  constructor(){
    super()
    this.state = {issues: [], category : "home", user_id:"",isLoggoutTriggered:false}
-   this.addNewLink = this.addNewLink.bind(this)
    this.setCurUser = this.setCurUser.bind(this)
    this.setCategory = this.setCategory.bind(this)
    this.deleteOnePage = this.deleteOnePage.bind(this)
@@ -317,20 +217,6 @@ export default class Homelogic extends React.Component{
  
  }
 
- //add link
- async addNewLink(issue){
-   issue.user_id = this.state.user_id;
-   const query = `mutation issueAdd($issue: IssueInputs!) {
-     issueAdd(issue: $issue) {
-       id
-     }
-   }`;
-   const data = await graphQLFetch(query, {issue});
-   issue.category = "home"
-   if (data) {
-     this.loadData(issue);
-   }
- }
 
  async setCategory(mycategory){
    console.log("clientf_origin:" + mycategory)
@@ -386,7 +272,7 @@ export default class Homelogic extends React.Component{
  render(){
    return (
      <div>
-       <ModalCollection addNewLink = {this.addNewLink}/>
+       
        <PageHead setCurUser = {this.setCurUser}/>
        <SideBar setCategory = {this.setCategory}/>
        <MainContent issues = {this.state.issues} changeCategoryOfOnePage = {this.changeCategoryOfOnePage} deleteOnePage = {this.deleteOnePage}/>
